@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 const useWeatherData = (city ) => {
   const [weatherData, setWeatherData] = useState(null);
   const API_URL = "https://api.openweathermap.org/data/2.5/weather?units=metric";
-  const API_KEY = "9d45261bda5cb03e32a634d21dfa1a14";
+  const API_KEY = import.meta.env.VITE_OPENWEATHERMAP_API_KEY;
+
+  // Fetch weather data from API
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -13,7 +15,6 @@ const useWeatherData = (city ) => {
         }
         const data = await res.json();
         setWeatherData(data);
-        console.log(data);
       } catch (error) {
         console.log(error.message);
         alert("Failed to fetch weather data. Please try again later.");
@@ -22,6 +23,7 @@ const useWeatherData = (city ) => {
 
     if (city !== "") {
       fetchData();
+
     }
   }, [city]);
 
