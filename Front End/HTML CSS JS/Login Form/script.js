@@ -4,7 +4,7 @@ let username=document.querySelector( '.input-field-1' ).firstElementChild;
 
 login_button.addEventListener("click",function(event){
     if(username.value==""||password.value==""){
-        event.preventDefault();;
+        event.preventDefault();
        alert("Please enter your username and password.");    
     }else if(password.value.length>15){
         event.preventDefault();
