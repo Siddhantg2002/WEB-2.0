@@ -74,7 +74,7 @@ form h1{
     color: white;
     font-size: small;
 }
-button{
+.input_field_3{
     width: 100%;
     margin-top: 15px;
     height: 40px;
@@ -113,6 +113,26 @@ button{
     font-size: x-small;
     flex-direction: column;
   }
+ svg{
+    height: 1cm;
+    width: 1cm;
+ }
+ .password_error{
+    color: white;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: xx-small;
+    padding-left: 10px;
+    display: flex;
+    justify-content: center;
+ }
  
- 
+ .username_error{
+    color: white;
+    margin-top: 5px;
+    font-size: xx-small;
+    padding-left: 10px;
+    display: flex;
+    justify-content: center;
+ }
  
