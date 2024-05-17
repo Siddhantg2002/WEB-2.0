@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@Components/*": [
+                "src/Components/*"
+            ],
+            "@Layouts/*": [
+                "src/Layouts/*"
+            ],
+            "@routes/*": [
+                "src/routes/*"
+            ],
+            "@/*": [
+                "src/*"
+            ],
+            "@Pages/*": [
+                "src/Pages/*"
+            ],
+            "@HomePage/*": [
+                "src/Pages/HomePage/*"
+            ],
+            "@Footer/*": [
+                "src/Components/Footer/*"
+            ],
+            "@Home/*": [
+                "src/Components/Home/*"
+            ],
+            "@Navbar/*": [
+                "src/Components/Navbar/*"
+            ],
+            "@CardSlider/*": [
+                "src/Components/CardSlider/*"
+            ]
+        }
+    }
+}

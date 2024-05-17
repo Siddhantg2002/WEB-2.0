@@ -1,0 +1,30 @@
+.video {
+  opacity: 0.8;
+  filter: brightness(50%);
+}
+
+.section1 {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  color: white;
+  animation: fadeInAnimation ease 10s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+.section1 p {
+  font-size: medium;
+  font-weight: 500;
+  font-style: italic;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

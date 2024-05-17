@@ -1,0 +1,6 @@
+.svg{
+    &:hover{
+        fill: black;
+    }
+    transition: fill 0.3s;
+}

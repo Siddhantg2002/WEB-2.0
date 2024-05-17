@@ -1,0 +1,11 @@
+.Navbar {
+  display: flex;
+  justify-content: center;
+  padding: 2px;
+  box-shadow: 2px 9px 5px 0px rgba(51, 45, 36, 0.29);
+  position: sticky;
+}
+.Navbar img {
+  cursor: pointer;
+  height: 2cm;
+}
