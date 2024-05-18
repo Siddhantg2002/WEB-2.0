@@ -1,6 +1,6 @@
 .video {
-  opacity: 0.8;
-  filter: brightness(50%);
+  opacity: 1;
+  filter: brightness(70%);
 }
 
 .section1 {
@@ -10,7 +10,7 @@
   transform: translate(-50%, -50%);
   width: 100%;
   color: white;
-  animation: fadeInAnimation ease 10s;
+  animation: fadeInAnimation ease 15s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
@@ -27,4 +27,12 @@
   100% {
     opacity: 1;
   }
+}
+.section2 {
+  padding-bottom: 3cm;
+  padding-top: 1cm;
+}
+.section2 .div {
+  display: flex;
+  justify-content: center;
 }

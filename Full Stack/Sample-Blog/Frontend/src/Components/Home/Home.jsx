@@ -1,17 +1,23 @@
 import styles from "./style.module.css"
-import CardSlider from "@Components/CardSlider/CardSlider";
+import Cards from "@Components/Cards/Cards";
+import Quotes from "@Components/Quote/Quotes";
+import { Button } from '@cred/neopop-web/lib/components';
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <>
       <video
       className={styles.video}
-        src="../../../images/Clouds.mp4"
+        src="../../../public/Mansion.mp4"
         autoPlay
         loop
         muted
         width="100%"
         height="auto"
+        preload="auto"
+        playsInline
       >
         Your browser does not support the video tag.
       </video>
@@ -37,7 +43,25 @@ const Home = () => {
         </div>
       </section>
       <section className={styles.section2}>
-        <CardSlider/>
+        <Cards/>
+        <div className={styles.div}>
+        <Button
+            variant="primary"
+            kind="elevated"
+            size="big"
+            colorMode="dark"
+            showArrow
+            onClick={() => {
+              navigate('/blogs')
+            }}
+        >
+            Explore
+        </Button>
+        </div>
+       
+      </section>
+      <section className={styles.section3}>
+        <Quotes/>
       </section>
     </>
   );

@@ -30,7 +30,19 @@
                 "src/Components/Navbar/*"
             ],
             "@CardSlider/*": [
-                "src/Components/CardSlider/*"
+                "src/Components/Cards/*"
+            ],
+            "@Cards/*": [
+                "src/Components/Cards/*"
+            ],
+            "@Blogs/*": [
+                "src/Components/Blogs/*"
+            ],
+            "@Quote/*": [
+                "src/Components/Quote/*"
+            ],
+            "@AllBlogs/*": [
+                "src/Components/AllBlogs/*"
             ]
         }
     }
