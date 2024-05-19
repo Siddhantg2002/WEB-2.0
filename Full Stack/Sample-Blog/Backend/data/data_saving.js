@@ -18,12 +18,14 @@ function saveDataSync() {
     const file3 = readFileSync('./file3.txt');
     const file4 = readFileSync('./file4.txt');
     const file5 = readFileSync('./file5.txt');
+    const file6 = readFileSync('./file6.txt');
     return {
       file1,
       file2,
       file3,
       file4,
       file5,
+      file6,
     };
   } catch (err) {
     console.error('Error saving data:', err);

@@ -43,6 +43,24 @@
             ],
             "@AllBlogs/*": [
                 "src/Components/AllBlogs/*"
+            ],
+            "@FAQ/*": [
+                "src/Components/FAQ/*"
+            ],
+            "@Clients/*": [
+                "src/Components/Clients/*"
+            ],
+            "@Features/*": [
+                "src/Components/Features/*"
+            ],
+            "@Carousel/*": [
+                "src/Components/Carousel/*"
+            ],
+            "@Login/*": [
+                "src/Components/Login/*"
+            ],
+            "@Cara/*": [
+                "src/Components/Cara/*"
             ]
         }
     }

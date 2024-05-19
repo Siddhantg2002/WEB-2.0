@@ -1,7 +1,12 @@
-import styles from "./style.module.css"
+import styles from "./style.module.css";
+
 import Cards from "@Components/Cards/Cards";
 import Quotes from "@Components/Quote/Quotes";
-import { Button } from '@cred/neopop-web/lib/components';
+import FAQ from "@Components/FAQ/FAQ";
+import Client from "@Components/Clients/Client";
+import Features from "@Components/Features/Features";
+
+import { Button } from "@cred/neopop-web/lib/components";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -9,8 +14,8 @@ const Home = () => {
   return (
     <>
       <video
-      className={styles.video}
-        src="../../../public/Mansion.mp4"
+        className={styles.video}
+        src="../../../images/home/Mansion.mp4"
         autoPlay
         loop
         muted
@@ -43,26 +48,27 @@ const Home = () => {
         </div>
       </section>
       <section className={styles.section2}>
-        <Cards/>
+        <Cards />
         <div className={styles.div}>
-        <Button
+          <Button
             variant="primary"
             kind="elevated"
             size="big"
             colorMode="dark"
             showArrow
             onClick={() => {
-              navigate('/blogs')
+              navigate("/blogs/1");
             }}
-        >
+          >
             Explore
-        </Button>
+          </Button>
         </div>
-       
       </section>
-      <section className={styles.section3}>
-        <Quotes/>
-      </section>
+
+      <Quotes />
+      <FAQ />
+      <Client />
+      <Features />
     </>
   );
 };

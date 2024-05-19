@@ -9,7 +9,7 @@ const Cards = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await fetch("http://localhost:3000/");
+        const res = await fetch("http://localhost:3000/latest-blogs");
         const result = await res.json();
         setData(result);
       } catch (error) {
@@ -33,7 +33,7 @@ const Cards = () => {
         ) : (
           data.length > 0 && (
             <>
-              <Link to={`/blogs/${data[0].id}`}>
+              <Link to={`/blogs/blog/${data[0].id}`}>
                 <div className="flex w-full">
                   <div className="relative flex flex-col items-start m-1 transition duration-300 ease-in-out delay-150 transform bg-white shadow-2xl rounded-xl md:w-80 md:-ml-16 md:hover:-translate-x-16 md:hover:-translate-y-8">
                     <img
@@ -52,12 +52,12 @@ const Cards = () => {
                   </div>
                 </div>
               </Link>
-              <Link to={`/blogs/${data[1].id}`}>
+              <Link to={`/blogs/blog/${data[1].id}`}>
                 <div className="flex w-full">
                   <div className="relative flex flex-col items-start m-1 transition duration-300 ease-in-out delay-150 transform bg-white shadow-2xl rounded-xl md:w-80 md:-ml-16 md:hover:-translate-x-16 md:hover:-translate-y-8">
                     <img
                       className="object-cover object-center w-full rounded-t-xl lg:h-48 md:h-36"
-                      src="../../../public/Luxury.jpg"
+                      src={data[1].image}
                       alt="blog"
                     />
                     <div className="px-6 py-8">
@@ -71,12 +71,12 @@ const Cards = () => {
                   </div>
                 </div>
               </Link>
-              <Link to={`/blogs/${data[2].id}`}>
+              <Link to={`/blogs/blog/${data[2].id}`}>
                 <div className="flex w-full">
                   <div className="relative flex flex-col items-start m-1 transition duration-300 ease-in-out delay-150 transform bg-white shadow-2xl rounded-xl md:w-80 md:-ml-16 md:hover:-translate-x-16 md:hover:-translate-y-8">
                     <img
                       className="object-cover object-center w-full rounded-t-xl lg:h-48 md:h-36"
-                      src="../../../public/yatch.jpg"
+                      src={data[2].image}
                       alt="blog"
                     />
                     <div className="px-6 py-8">
@@ -90,12 +90,12 @@ const Cards = () => {
                   </div>
                 </div>
               </Link>
-              <Link to={`/blogs/${data[3].id}`}>
+              <Link to={`/blogs/blog/${data[3].id}`}>
                 <div className="flex w-full">
                   <div className="relative flex flex-col items-start m-1 transition duration-300 ease-in-out delay-150 transform bg-white shadow-2xl rounded-xl md:w-80 md:-ml-16 md:hover:-translate-x-16 md:hover:-translate-y-8">
                     <img
                       className="object-cover object-center w-full rounded-t-xl lg:h-48 md:h-36"
-                      src="../../../public/gold.jpg"
+                      src={data[3].image}
                       alt="blog"
                     />
                     <div className="px-6 py-8">

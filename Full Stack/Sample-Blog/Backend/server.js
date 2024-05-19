@@ -1,51 +1,31 @@
 const cors = require('cors');
-const express = require('express');
-const feeding_blogs = require('./models/data_feeding');
-const Blogs = require("./models/schema");
-const connect_to_database = require("./connect_to_db");
+const express = require('express')
+
+const connect_to_database = require('./connect_to_db');
+const Latest_Blogs_data_feeding = require('./Latest_Blogs_data_feeding');
+const All_blogs_data_feeding = require('./All_Blogs_data_feeding');
+
+const latestBlogsRouter = require('./routes/latest_blogs');
+const indexRouter = require('./routes/index')
+const AllBlogsRouter = require('./routes/All_blogs')
 
 const app = express();
 const port = 3000;
 
 app.use(cors());
-app.use(express.json()); // Ensure you can parse JSON bodies if needed
+app.use(express.json());
 
-// Connect to the database
-connect_to_database();
+const Databse_function = async () => {
+  await connect_to_database();
+  await Latest_Blogs_data_feeding();
+  await All_blogs_data_feeding();
+};
+Databse_function();
 
-// Feed initial blogs
-feeding_blogs();
-
-// Serve favicon.ico to prevent CastError
-app.get('/favicon.ico', (req, res) => res.status(204).end());
-
-// Root route to fetch all blogs
-app.get('/', async (req, res, next) => {
-  try {
-    const blogs = await Blogs.find();
-    res.send(blogs);
-  } catch (error) {
-    next(error); // Pass the error to the error handler
-  }
-});
-
-// Route to fetch a blog by ID
-app.get('/:id', async (req, res, next) => {
-  const id = req.params.id;
-  if (!Number.isInteger(Number(id))) {
-    return res.status(400).send('Invalid blog ID');
-  }
-
-  try {
-    const blog = await Blogs.findOne({ id: Number(id) });
-    if (!blog) {
-      return res.status(404).send('Blog not found');
-    }
-    res.send(blog);
-  } catch (error) {
-    next(error); // Pass the error to the error handler
-  }
-});
+// Use the routers
+app.use('/', indexRouter);
+app.use('/latest-blogs', latestBlogsRouter);
+app.use('/all-blogs', AllBlogsRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

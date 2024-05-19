@@ -8,7 +8,7 @@ const Blog = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/${id}`);
+        const res = await fetch(`http://localhost:3000/latest-blogs/${id}`);
         const data = await res.json();
         setBlogs(data);
       } catch (error) {
