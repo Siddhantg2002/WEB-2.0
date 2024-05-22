@@ -2,7 +2,7 @@ import React from "react";
 
 const FAQ = () => {
   return (
-    <section class="px-4 pt-20 pb-24 mx-auto max-w-7xl md:px-2">
+    <section class="px-4 pt-20 pb-10 mx-auto max-w-7xl md:px-2">
       <h1 class="mb-12 text-xl font-bold text-left md:text-3xl md:text-center">
         Frequently Asked Questions
       </h1>

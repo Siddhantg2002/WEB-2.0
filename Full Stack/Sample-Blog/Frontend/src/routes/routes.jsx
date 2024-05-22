@@ -6,6 +6,7 @@ import Login from "@Components/Login/Login";
 import Blog from "@Components/Blogs/Blog";
 import AllBlogs from "@Components/AllBlogs/AllBlogs";
 import AllBlogsContent from "@Components/Blogs/AllBlogsContent";
+import Signup from "@Components/Signup/Signup";
 
 const routes = createBrowserRouter([
   {
@@ -22,11 +23,11 @@ const routes = createBrowserRouter([
         element: <Blog />
       },
       {
-        path: "/blogs/:page_number",
+        path: "/blogs/:page",
         element: <AllBlogs/>
       },
       {
-        path: "/blogs/:page_number/:id",
+        path: "/blogs/:page/:id",
         element: <AllBlogsContent/>
       },
     ]
@@ -34,6 +35,10 @@ const routes = createBrowserRouter([
   {
     path: "/login",
     element: <Login/>,
+  },
+  {
+    path: "/sign-up",
+    element: <Signup/>,
   }
 ]);
 

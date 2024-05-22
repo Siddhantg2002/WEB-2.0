@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
+import { Button } from "@cred/neopop-web/lib/components";
 
 const AllBlogsContent = () => {
   const [blogs, setBlogs] = useState({});
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,6 +63,19 @@ const AllBlogsContent = () => {
         {body}
         </p>
       </div>
+      <div className='flex justify-center'>
+          <Button
+            variant="secondary"
+            kind="elevated"
+            size="big"
+            colorMode="dark"
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            Go Back
+          </Button>
+        </div>
     </article>
   );
 };

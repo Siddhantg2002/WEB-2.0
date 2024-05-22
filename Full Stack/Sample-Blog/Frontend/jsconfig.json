@@ -14,53 +14,11 @@
             "@/*": [
                 "src/*"
             ],
-            "@Pages/*": [
-                "src/Pages/*"
-            ],
-            "@HomePage/*": [
-                "src/Pages/HomePage/*"
-            ],
-            "@Footer/*": [
-                "src/Components/Footer/*"
-            ],
-            "@Home/*": [
-                "src/Components/Home/*"
-            ],
-            "@Navbar/*": [
-                "src/Components/Navbar/*"
-            ],
-            "@CardSlider/*": [
-                "src/Components/Cards/*"
-            ],
-            "@Cards/*": [
-                "src/Components/Cards/*"
-            ],
-            "@Blogs/*": [
-                "src/Components/Blogs/*"
-            ],
-            "@Quote/*": [
-                "src/Components/Quote/*"
-            ],
-            "@AllBlogs/*": [
-                "src/Components/AllBlogs/*"
-            ],
-            "@FAQ/*": [
-                "src/Components/FAQ/*"
-            ],
-            "@Clients/*": [
-                "src/Components/Clients/*"
-            ],
             "@Features/*": [
                 "src/Components/Features/*"
             ],
-            "@Carousel/*": [
-                "src/Components/Carousel/*"
-            ],
-            "@Login/*": [
-                "src/Components/Login/*"
-            ],
-            "@Cara/*": [
-                "src/Components/Cara/*"
+            "@Logos/*": [
+                "src/Components/Logos/*"
             ]
         }
     }

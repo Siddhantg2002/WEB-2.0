@@ -1,10 +1,11 @@
 import styles from "./style.module.css";
 
 import Cards from "@Components/Cards/Cards";
-import Quotes from "@Components/Quote/Quotes";
 import FAQ from "@Components/FAQ/FAQ";
 import Client from "@Components/Clients/Client";
 import Features from "@Components/Features/Features";
+import CallToAction from "@Components/CallToAction/CallToAction";
+import Logo from "@Components/Logos/Logo";
 
 import { Button } from "@cred/neopop-web/lib/components";
 import { useNavigate } from "react-router-dom";
@@ -64,11 +65,11 @@ const Home = () => {
           </Button>
         </div>
       </section>
-
-      <Quotes />
-      <FAQ />
-      <Client />
+      <CallToAction />
       <Features />
+      <Client />
+      <FAQ />
+      <Logo />
     </>
   );
 };

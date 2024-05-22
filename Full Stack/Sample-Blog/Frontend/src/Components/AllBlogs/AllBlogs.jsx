@@ -1,15 +1,16 @@
 import { Button } from "@cred/neopop-web/lib/components";
-import { useNavigate ,Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const AllBlogs = () => {
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [data, setData] = useState({ results: [], next: null, previous: null });
+  const { page } = useParams(); // Get the current page from the URL params
+  const [currentPage, setCurrentPage] = useState(parseInt(page));
+  const [data, setData] = useState({ results: [] });
   const [loading, setLoading] = useState(true);
 
   const handleNextClick = () => {
-    if (data.next) {
+    if (data) {
       const nextPage = currentPage + 1;
       setCurrentPage(nextPage);
       navigate(`/blogs/${nextPage}`);
@@ -17,7 +18,7 @@ const AllBlogs = () => {
   };
 
   const handlePreviousClick = () => {
-    if (data.previous) {
+    if (data) {
       const previousPage = currentPage - 1;
       setCurrentPage(previousPage);
       navigate(`/blogs/${previousPage}`);
@@ -27,8 +28,9 @@ const AllBlogs = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const res = await fetch(
-          `http://localhost:3000/all-blogs?page=${currentPage}&limit=6`
+          `http://localhost:3000/all-blogs?page=${currentPage}&limit=12`
         );
         const result = await res.json();
         setData(result);
@@ -43,7 +45,70 @@ const AllBlogs = () => {
   }, [currentPage]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <section class="bg-white">
+      <div class="container px-6 py-10 mx-auto animate-pulse">
+        
+          <div class="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3">
+              <div class="w-full ">
+                  <div class="w-full h-64 bg-gray-300 rounded-lg"></div>
+                  
+                  <h1 class="w-56 h-2 mt-4 bg-gray-200 rounded-lg "></h1>
+                  <p class="w-24 h-2 mt-4 bg-gray-200 rounded-lg "></p>
+              </div>
+  
+              <div class="w-full ">
+                  <div class="w-full h-64 bg-gray-300 rounded-lg "></div>
+                  
+                  <h1 class="w-56 h-2 mt-4 bg-gray-200 rounded-lg "></h1>
+                  <p class="w-24 h-2 mt-4 bg-gray-200 rounded-lg "></p>
+              </div>
+  
+              <div class="w-full ">
+                  <div class="w-full h-64 bg-gray-300 rounded-lg "></div>
+                  
+                  <h1 class="w-56 h-2 mt-4 bg-gray-200 rounded-lg "></h1>
+                  <p class="w-24 h-2 mt-4 bg-gray-200 rounded-lg "></p>
+              </div>
+  
+              <div class="w-full ">
+                  <div class="w-full h-64 bg-gray-300 rounded-lg "></div>
+                  
+                  <h1 class="w-56 h-2 mt-4 bg-gray-200 rounded-lg "></h1>
+                  <p class="w-24 h-2 mt-4 bg-gray-200 rounded-lg "></p>
+              </div>
+  
+              <div class="w-full ">
+                  <div class="w-full h-64 bg-gray-300 rounded-lg "></div>
+                  
+                  <h1 class="w-56 h-2 mt-4 bg-gray-200 rounded-lg "></h1>
+                  <p class="w-24 h-2 mt-4 bg-gray-200 rounded-lg "></p>
+              </div>
+  
+              <div class="w-full ">
+                  <div class="w-full h-64 bg-gray-300 rounded-lg "></div>
+                  
+                  <h1 class="w-56 h-2 mt-4 bg-gray-200 rounded-lg "></h1>
+                  <p class="w-24 h-2 mt-4 bg-gray-200 rounded-lg "></p>
+              </div>
+  
+              <div class="w-full ">
+                  <div class="w-full h-64 bg-gray-300 rounded-lg "></div>
+                  
+                  <h1 class="w-56 h-2 mt-4 bg-gray-200 rounded-lg "></h1>
+                  <p class="w-24 h-2 mt-4 bg-gray-200 rounded-lg "></p>
+              </div>
+  
+              <div class="w-full ">
+                  <div class="w-full h-64 bg-gray-300 rounded-lg "></div>
+                  
+                  <h1 class="w-56 h-2 mt-4 bg-gray-200 rounded-lg "></h1>
+                  <p class="w-24 h-2 mt-4 bg-gray-200 rounded-lg "></p>
+              </div>
+          </div>
+      </div>
+  </section>
+    );
   }
 
   return (
@@ -52,14 +117,13 @@ const AllBlogs = () => {
         Our Stories
       </h2>
       <p className="mb-20 text-lg text-gray-500">
-        Comes directly from the desk of bloggers, creators and writers at
-        Blog.
+        Comes directly from the desk of bloggers, creators and writers at Blog.
       </p>
       {data.results && (
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
           {data.results.map((blog, index) => (
             <div key={index}>
-                <Link to={`/blogs/${currentPage}/${blog.id}`}>
+              <Link to={`/blogs/${currentPage}/${blog.id}`}>
                 <img
                   src={blog.image}
                   className="object-cover w-full h-56 mb-5 bg-center rounded"
@@ -68,7 +132,10 @@ const AllBlogs = () => {
                 />
               </Link>
               <h2 className="mb-2 text-lg font-semibold text-gray-900">
-              <Link to={`/blogs/${currentPage}/${blog.id}`} className="text-gray-900 hover:text-purple-700">
+                <Link
+                  to={`/blogs/${currentPage}/${blog.id}`}
+                  className="text-gray-900 hover:text-purple-700"
+                >
                   {blog.title}
                 </Link>
               </h2>
@@ -76,9 +143,9 @@ const AllBlogs = () => {
                 {blog.description}
               </p>
               <p className="mb-3 text-sm font-normal text-gray-500">
-                <p href="#" className="font-medium text-gray-900 hover:text-purple-700">
+                <span className="font-medium text-gray-900 hover:text-purple-700">
                   {blog.author}
-                </p>
+                </span>
                 • {blog.date}
               </p>
             </div>
@@ -97,17 +164,17 @@ const AllBlogs = () => {
             Previous Page
           </Button>
         )}
-        {currentPage<5 &&(
-           <Button
-          variant="secondary"
-          kind="elevated"
-          size="big"
-          colorMode="dark"
-          onClick={handleNextClick}
-        >
-          Next Page
-        </Button>
-        )} 
+        {currentPage < 5 && (
+          <Button
+            variant="secondary"
+            kind="elevated"
+            size="big"
+            colorMode="dark"
+            onClick={handleNextClick}
+          >
+            Next Page
+          </Button>
+        )}
       </div>
     </section>
   );
