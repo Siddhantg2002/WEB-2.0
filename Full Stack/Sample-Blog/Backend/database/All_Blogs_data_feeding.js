@@ -1,11 +1,6 @@
-const crypto = require('crypto');
-const fileData = require("./data/data_saving");
-const AllBlogs = require("./models/All_Blogs_schema");
-const HashStore = require("./models/HashStore_schema"); // Ensure you have this schema defined
-
-async function generateHash(data) {
-  return crypto.createHash('sha256').update(JSON.stringify(data)).digest('hex');
-}
+const fileData = require("./data_saving");
+const AllBlogs = require("../models/All_Blogs_schema");
+const optimization_for_feeding_data = require("./optimization_for_feeding_data");
 
 async function All_Blogs_feeding() {
   const blogsData = [
@@ -550,36 +545,9 @@ async function All_Blogs_feeding() {
       image: "../../../images/all-blogs/60.jpeg",
     },
   ];
-
-  const newHash = await generateHash(blogsData);
-
-  try {
-    const existingHashDoc = await HashStore.findOne({ name: 'allBlogsHash' });
-    if (existingHashDoc && existingHashDoc.hash === newHash) {
-      console.log('All Blogs Data has not changed. No need to insert.');
-      return;
-    }
-
-    if (existingHashDoc) {
-      await AllBlogs.deleteMany({});
-      console.log('All Blogs Old data deleted.');
-    }
-
-    await AllBlogs.insertMany(blogsData);
-    console.log('All Blogs data inserted.');
-
-    if (existingHashDoc) {
-      existingHashDoc.hash = newHash;
-      await existingHashDoc.save();
-    } else {
-      await HashStore.create({ name: 'allBlogsHash', hash: newHash });
-    }
-
-    console.log('Hash updated.');
-
-  } catch (error) {
-    console.log(error.message);
-  }
+  
+optimization_for_feeding_data(blogsData,'allBlogsHash', AllBlogs, 'All Blogs' )
+  
 }
 
 module.exports = All_Blogs_feeding;

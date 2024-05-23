@@ -13,12 +13,12 @@ function readFileSync(filePath) {
 
 function saveDataSync() {
   try {
-    const file1 = readFileSync('./file1.txt');
-    const file2 = readFileSync('./file2.txt');
-    const file3 = readFileSync('./file3.txt');
-    const file4 = readFileSync('./file4.txt');
-    const file5 = readFileSync('./file5.txt');
-    const file6 = readFileSync('./file6.txt');
+    const file1 = readFileSync('../data/file1.txt');
+    const file2 = readFileSync('../data/file2.txt');
+    const file3 = readFileSync('../data/file3.txt');
+    const file4 = readFileSync('../data/file4.txt');
+    const file5 = readFileSync('../data/file5.txt');
+    const file6 = readFileSync('../data/file6.txt');
     return {
       file1,
       file2,

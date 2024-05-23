@@ -1,39 +1,29 @@
-const cors = require('cors');
-const express = require('express')
-
-const connect_to_database = require('./connect_to_db');
-const Latest_Blogs_data_feeding = require('./Latest_Blogs_data_feeding');
-const All_blogs_data_feeding = require('./All_Blogs_data_feeding');
-
-const latestBlogsRouter = require('./routes/latest_blogs');
-const indexRouter = require('./routes/index')
-const AllBlogsRouter = require('./routes/All_blogs')
+const cors = require("cors");
+const express = require("express");
+const connect_to_database = require("./database/connect_to_db");
+const allRoutes = require('./routes/index')
+const error_handling = require('./middlewares/error')
 
 const app = express();
 const port = 3000;
-
 app.use(cors());
 app.use(express.json());
 
 const Databse_function = async () => {
-  await connect_to_database();
-  await Latest_Blogs_data_feeding();
-  await All_blogs_data_feeding();
+  try {
+    await connect_to_database();
+    app.listen(port, () => {
+      console.log(`Example app listening on http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
 };
-Databse_function();
 
 // Use the routers
-app.use('/', indexRouter);
-app.use('/latest-blogs', latestBlogsRouter);
-app.use('/all-blogs', AllBlogsRouter);
+allRoutes(app)
 
 // Error handling middleware
-app.use((err, req, res, next) => {
-  console.error('Error:', err.stack); // Log the error stack for debugging
-  res.status(500).send('Something broke!');
-});
+app.use(error_handling);
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+Databse_function();

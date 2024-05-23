@@ -1,10 +1,12 @@
-const express = require('express');
-const router = express.Router();
+const latestBlogsRouter = require("../routes/latest_blogs");
+const HomeRouter = require("../routes/home");
+const AllBlogsRouter = require("../routes/All_blogs");
 
-// Serve favicon.ico to prevent CastError
-router.get('/favicon.ico', (req, res) => res.status(204).end());
+// Use the routers
+const allRoutes = (app) => {
+  app.use("/", HomeRouter);
+  app.use("/latest-blogs", latestBlogsRouter);
+  app.use("/all-blogs", AllBlogsRouter);
+};
 
-// Default route
-router.get('/', (req, res) => res.send('Hello World!'));
-
-module.exports = router;
+module.exports = allRoutes;
