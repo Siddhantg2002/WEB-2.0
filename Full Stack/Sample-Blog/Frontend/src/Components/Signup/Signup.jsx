@@ -1,54 +1,53 @@
-import { Button, ToastContainer, showToast } from "@cred/neopop-web/lib/components";
-import { useNavigate} from "react-router-dom";
+import { Button,ToastContainer,showToast } from "@cred/neopop-web/lib/components";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
 import validatePassword from "./ValidatePassword";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const Signup = () => {
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful, isValid },
+    formState: { errors, isSubmitting},
   } = useForm();
-
-  const delay = (d) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve();
-      }, d * 1000);
-    });
-  };
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = async (data) => {
     try {
-      await delay(3);
-      console.log(data);
+      let response = await fetch("http://localhost:3000/sign-up", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message);
+      } else {
+        setErrorMessage("");
+        navigate("/login");
+      }
     } catch (error) {
-      console.log(error.message);
+      console.error("Error:", error.message);
+      setErrorMessage(error.message);
     }
   };
+useEffect(() => {
+  if(errorMessage){
+      showToast(errorMessage, { type: 'error', autoCloseTime: '1000' });
+      setErrorMessage("")
+  }
 
-  useEffect(() => {
-    const showToastAndRedirect = async () => {
-      if (isSubmitting && isValid) {
-        showToast('Submitting...', { type: 'warning', autoCloseTime: '3000' });
-      }
-      if (isSubmitSuccessful) {
-        showToast('Submitted Successfully.', { type: 'success', autoCloseTime: '2000' });
-        await delay(2);
-        navigate('/login');
-      }
-    };
-
-    showToastAndRedirect();
-  }, [isSubmitting, isSubmitSuccessful]);
+}, [errorMessage])
 
 
   return (
     <section className="bg-white">
-      <ToastContainer />
+       <ToastContainer />
       <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
         <form className="w-full max-w-md" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex justify-center mx-auto">
@@ -118,7 +117,8 @@ const Signup = () => {
               placeholder="Email address"
               {...register("email", {
                 required: "* Email is required",
-                validate: value => isEmail(value) || "* Please enter a valid email"
+                validate: (value) =>
+                  isEmail(value) || "* Please enter a valid email",
               })}
             />
           </div>
@@ -152,7 +152,7 @@ const Signup = () => {
                 required: "* Password is required",
                 minLength: { value: 5, message: "* Password too short" },
                 maxLength: { value: 15, message: "* Password too long" },
-                validate: validatePassword
+                validate: validatePassword,
               })}
             />
           </div>
@@ -167,11 +167,12 @@ const Signup = () => {
               size="small"
               colorMode="dark"
               type="submit"
-              disabled={isSubmitting || isSubmitSuccessful}
+              disabled={isSubmitting}
             >
               Sign up
             </Button>
           </div>
+        
         </form>
       </div>
     </section>

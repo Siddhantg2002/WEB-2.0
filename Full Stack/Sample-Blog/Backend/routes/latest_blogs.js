@@ -1,5 +1,6 @@
 const express = require('express');
 const Latest_Blogs = require('../models/Latest_Blogs_schema');
+const error_handling = require("../middlewares/error")
 
 const router = express.Router();
 
@@ -9,7 +10,7 @@ router.get('/', async (req, res, next) => {
     const blogs = await Latest_Blogs.find();
     res.send(blogs);
   } catch (error) {
-    next(error); // Pass the error to the error handler
+    next(error)
   }
 });
 
@@ -27,7 +28,7 @@ router.get('/:id', async (req, res, next) => {
     }
     res.send(blog);
   } catch (error) {
-    next(error); // Pass the error to the error handler
+    next(error)
   }
 });
 
