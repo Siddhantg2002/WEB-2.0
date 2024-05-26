@@ -1,4 +1,5 @@
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
 const express = require("express");
 const connect_to_database = require("./database/connect_to_db");
 const allRoutes = require('./routes/index')
@@ -7,8 +8,13 @@ const data_feeding_in_db = require('./database/data_feeding_in_db')
 
 const app = express();
 const port = 3000;
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+  methods: ["GET", "POST"]
+}));
 app.use(express.json());
+app.use(cookieParser());
 
 const Databse_function = async () => {
   try {
