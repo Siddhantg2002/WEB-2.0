@@ -1,6 +1,8 @@
 import { Button } from "@cred/neopop-web/lib/components";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { SearchBar } from '@cred/neopop-web/lib/components';
+import { colorGuide,FontVariant } from '@cred/neopop-web/lib/primitives';
 
 const AllBlogs = () => {
   const navigate = useNavigate();
@@ -24,6 +26,12 @@ const AllBlogs = () => {
       navigate(`/blogs/${previousPage}`);
     }
   };
+    const handleChange = (value) => {
+        console.log('Search query: ', value);
+    };
+    const handleSubmit = () => {
+        console.log('Search query submitted');
+    };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,9 +124,19 @@ const AllBlogs = () => {
       <h2 className="mb-2 text-3xl font-extrabold leading-tight text-gray-900">
         Our Stories
       </h2>
-      <p className="mb-20 text-lg text-gray-500">
+      <p className="mb-2 text-lg text-gray-500">
         Comes directly from the desk of bloggers, creators and writers at Blog.
       </p>
+      <div className="mb-8">
+      <SearchBar
+            iconUrl="https://cdn-icons-png.flaticon.com/512/482/482631.png"
+            placeholder="search here"
+            colorConfig={colorGuide.lightComponents.searchBar}
+            inputColorConfig={colorGuide.lightComponents.inputFields}
+            handleSearchInput={handleChange}
+            onSubmit={handleSubmit}
+        />
+       </div>
       {data.results && (
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
           {data.results.map((blog, index) => (

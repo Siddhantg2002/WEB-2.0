@@ -10,13 +10,23 @@ const Signup = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting},
+    formState: { errors, isSubmitting, isValid},
   } = useForm();
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessmessage] = useState("");
+
+  const delay = (d)=>{
+    return new Promise((resolve, reject)=>{
+      setTimeout(() => {
+        resolve()
+      }, d * 1000);
+    })
+  }
 
   const onSubmit = async (data) => {
+    await delay(3)
     try {
-      let response = await fetch("http://localhost:3000/sign-up", {
+      const response = await fetch("http://localhost:3000/sign-up", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -28,21 +38,28 @@ const Signup = () => {
         const error = await response.json();
         throw new Error(error.message);
       } else {
-        setErrorMessage("");
-        navigate("/login");
+        setSuccessmessage("Account created successfully");
       }
     } catch (error) {
       console.error("Error:", error.message);
       setErrorMessage(error.message);
     }
   };
+
 useEffect(() => {
   if(errorMessage){
-      showToast(errorMessage, { type: 'error', autoCloseTime: '1000' });
+      showToast(errorMessage, { type: 'error', autoCloseTime: '2000' });
       setErrorMessage("")
   }
-
-}, [errorMessage])
+  if(isSubmitting && isValid){
+    showToast("Submitting...", { type: 'warning', autoCloseTime: '3000' });
+  }
+  if(successMessage ){
+    showToast(successMessage, { type: 'success', autoCloseTime: '2000' });
+    setSuccessmessage("")
+    
+  }
+}, [errorMessage, isSubmitting , successMessage])
 
 
   return (

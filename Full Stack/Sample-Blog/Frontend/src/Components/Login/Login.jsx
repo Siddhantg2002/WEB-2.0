@@ -4,22 +4,54 @@ import Carousel from "@Components/Carousel/Carousel";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
-
+import { useAuth } from '../../../Auth/AuthContext';
+import { useState } from "react";
 
 const Login = () => {
+  const [CredentialError, setCredentialError]= useState(null)
+
   const navigate = useNavigate();
+  const { login } = useAuth();
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful, isValid },
+    formState: { errors},
   } = useForm();
+
+  const onSubmit = async (data) => {
+    try {
+        const response = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+            credentials: 'include',
+        });
+        const result = await response.json();
+        console.log(result)
+        if (response.ok) {
+            login();
+            navigate('/');
+        } else {
+           const error = await response.json()
+           throw new Error(error.error)
+        }
+    } catch (error) {
+        console.error("Error:", error.message);
+        setCredentialError(error.message)
+    }
+};
+
   return (
     <section className={style.login}>
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg lg:max-w-4xl">
         <div className={style.Carousel_holder}>
           <Carousel />
         </div>
-        <form className="w-full px-6 py-8 md:px-8 lg:w-1/2">
+        <form 
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full px-6 py-8 md:px-8 lg:w-1/2">
           <div className="flex justify-center mx-auto">
             <img
               className="w-auto h-7 sm:h-8 cursor-pointer"
@@ -63,12 +95,9 @@ const Login = () => {
           </a>
           <div className="flex items-center justify-between mt-4">
             <span className="w-1/5 border-b lg:w-1/4" />
-            <a
-              href="#"
-              className="text-xs text-center text-gray-500 uppercase hover:underline"
-            >
+            <p className="text-xs text-center text-gray-500 uppercase">
               or login with email
-            </a>
+            </p>
             <span className="w-1/5 border-b  lg:w-1/4" />
           </div>
           <div className="mt-4">
@@ -99,16 +128,25 @@ const Login = () => {
               >
                 Password
               </label>
-              <a href="#" className="text-xs text-gray-500 hover:underline">
+              <Link to="#" className="text-xs text-gray-500 hover:underline">
                 Forget Password?
-              </a>
+              </Link>
             </div>
             <input
               id="loggingPassword"
               className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300"
               type="password"
+              {...register("password", {
+                required: "* Password is required",
+              })}
             />
           </div>
+          <div className="mt-1 text-red-500 text-sm">
+            {errors.password && <span>{errors.password.message}</span>}
+          </div>
+          <div className=" flex justify-center mt-3 text-red-500 text-sm font-semibold">
+              {CredentialError}
+            </div>
           <div className="mt-6 flex justify-center">
             <Button
               variant="primary"

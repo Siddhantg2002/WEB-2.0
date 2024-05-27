@@ -1,5 +1,5 @@
 {
-  "name": "my-project",
+  "name": "sample-blog",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,6 +13,7 @@
     "@cred/neopop-web": "^1.0.0",
     "gulp": "^5.0.0",
     "gulp-sass": "^5.1.0",
+    "js-cookie": "^3.0.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.51.5",

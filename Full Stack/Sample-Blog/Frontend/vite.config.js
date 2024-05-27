@@ -13,6 +13,7 @@ export default defineConfig({
       logPath: 'Logs/logs',
     })
   ],
+  
   server: {
     port: 5173,
   },

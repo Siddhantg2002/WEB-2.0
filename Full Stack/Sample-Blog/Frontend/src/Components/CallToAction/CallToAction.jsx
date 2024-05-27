@@ -25,7 +25,7 @@ const CallToAction = () => {
             size="big"
             colorMode="dark"
             onClick={() => {
-              navigate("/login");
+              navigate("/account");
             }}
           >
             Get Started

@@ -14,11 +14,11 @@
             "@/*": [
                 "src/*"
             ],
-            "@Features/*": [
-                "src/Components/Features/*"
+            "@Account/*": [
+                "src/Components/Account/*"
             ],
-            "@Logos/*": [
-                "src/Components/Logos/*"
+            "@AccountHome/*": [
+                "src/Components/AccountHome/*"
             ]
         }
     }
