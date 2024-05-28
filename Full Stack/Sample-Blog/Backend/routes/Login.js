@@ -13,8 +13,7 @@ router.post("/", async (req, res, next) => {
     const user = await User.login(email, password);
     const token = createToken(user._id);
     res.cookie("jwt", token);
-    res.cookie("username", user.username)
-    res.status(200).send({ message: "user logged in" , "username": user.username});
+    res.status(200).send({ message: "user logged in" });
   } catch (error) {
     next(error);
   }

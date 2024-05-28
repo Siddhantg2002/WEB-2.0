@@ -14,6 +14,8 @@ import YourBlogs from '@Components/YourBlogs/YourBlogs';
 import UploadBlog from '@Components/UploadBlogs/UploadBlog';
 import AccountHome from '@Components/AccountHome/AccountHome';
 import ProtectedRoute from '../../Auth/ProtectedRoute';
+import YourBlogsContent from '@Components/AllBlogs/YourBlogsContent/YourBlogsContent';
+
 
 const routes = createBrowserRouter([
   {
@@ -56,6 +58,10 @@ const routes = createBrowserRouter([
               {
                 path: 'your-blogs',
                 element: <YourBlogs/>
+              },
+              {
+                path: 'your-blogs/:id',
+                element: <YourBlogsContent/>
               },
               {
                 path: 'upload-blog',

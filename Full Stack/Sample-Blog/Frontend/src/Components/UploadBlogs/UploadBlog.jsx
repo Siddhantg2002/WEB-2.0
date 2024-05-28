@@ -5,11 +5,10 @@ import SubmittingToast from "./SubmittingToast";
 import SubmittedToast from "./SubmittedToast";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
-import { useUserBlog } from "../../../Auth/UserBlogsContext";
+
 
 const UploadBlog = () => {
   const [preview, setPreview] = useState(null);
-  const {setUserBlogs, userBlogs} = useUserBlog()
   const navigate = useNavigate()
   const {
     register,
@@ -25,23 +24,30 @@ const UploadBlog = () => {
   };
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    if (
-      file &&
-      (file.type === "image/png" ||
-        file.type === "image/jpeg" ||
-        file.type === "image/jpg")
-    ) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      // Clear preview if file is invalid
-      setPreview(null);
-      alert("Please upload a valid image file (PNG, JPG).");
+    if (file) {
+      if (
+        (file.type === "image/png" ||
+          file.type === "image/jpeg" ||
+          file.type === "image/jpg") &&
+        file.size <= 10 * 1024 * 1024 // 10MB in bytes
+      ) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        // Clear preview if file is invalid
+        setPreview(null);
+        if (file.size > 10 * 1024 * 1024) {
+          alert("File size must be less than 10MB.");
+        } else {
+          alert("Please upload a valid image file (PNG, JPG).");
+        }
+      }
     }
   };
+  
   useEffect(() => {
     const redirect = async()=>{
       if(isSubmitSuccessful){
@@ -54,15 +60,20 @@ const UploadBlog = () => {
   
   const onSubmit = async (data) => {
     await delay(3)
+    // console.log(data)
     try {
       const token = Cookies.get('jwt');
+
+      const formData = new FormData();
+      Object.keys(data).forEach(key => formData.append(key, data[key]));
+      formData.append('BlogPic', data.blog_pic[0]);
+
       const response = await fetch("http://localhost:3000/user-blogs", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`, 
         },
-        body: JSON.stringify(data),
+        body: formData,
       });
       
       if (!response.ok) {
@@ -70,8 +81,7 @@ const UploadBlog = () => {
         throw new Error(error.message);
       } else {
         const result = await response.json();
-        setUserBlogs(result)
-        console.log(userBlogs)
+        console.log(result)
       }
     } catch (error) {
       console.error("Error:", error.message);
@@ -81,7 +91,8 @@ const UploadBlog = () => {
   return (
     <>
       <div className="p-5 px-48">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form 
+        onSubmit={handleSubmit(onSubmit)} enctype="multipart/form-data">
           <div className="mb-4">
             <label
               htmlFor="title"
@@ -91,8 +102,9 @@ const UploadBlog = () => {
             </label>
             <input
               type="text"
+              placeholder="Enter Title"
               id="title"
-              className="mt-1 p-2 block w-full rounded-md border border-gray-900/25 border-dashed focus:ring-indigo-500 sm:text-sm"
+              className="mt-1  p-2 block w-full rounded-md border border-gray-900/25 border-dashed focus:ring-indigo-500 sm:text-sm"
               {...register("title", {
                 required: "* Title is required",
                 minLength: { value: 5, message: "* Title too short" },
@@ -113,11 +125,12 @@ const UploadBlog = () => {
             <input
               type="text"
               id="author"
+              placeholder="Enter Name"
               className="mt-1 p-2 block w-full rounded-md border border-gray-900/25 border-dashed focus:ring-indigo-500 sm:text-sm"
               {...register("author", {
                 required: "* Author is required",
                 minLength: { value: 5, message: "* Author too short" },
-                maxLength: { value: 20, message: "* Author too long" },
+                maxLength: { value: 30, message: "* Author too long" },
               })}
             />
             <div className="mt-1 text-red-500 text-sm">
@@ -134,7 +147,7 @@ const UploadBlog = () => {
             <input
               type="date"
               id="date"
-              className="mt-1 p-2 block w-full rounded-md border border-gray-900/25 border-dashed focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 p-2 block cursor-pointer w-full rounded-md border border-gray-900/25 border-dashed focus:ring-indigo-500 sm:text-sm"
               {...register("date", {
                 required: "* Date is required",
               })}
@@ -151,6 +164,7 @@ const UploadBlog = () => {
               Blog Content
             </label>
             <textarea
+              placeholder="Write your mind here"
               id="content"
               rows="10"
               className="mt-1 p-2 block w-full rounded-md border border-gray-900/25 border-dashed focus:ring-indigo-500 sm:text-sm"
@@ -206,9 +220,9 @@ const UploadBlog = () => {
                     id="file-upload"
                     type="file"
                     className="sr-only"
-                    // {...register("pic", {
-                    //   required: "* Cover pic is required",
-                    // })}
+                    {...register("blog_pic", {
+                      required: "* Cover pic is required",
+                    })}
                     onChange={handleFileChange}
                   />
                 </label>
@@ -220,7 +234,7 @@ const UploadBlog = () => {
             </div>
           </div>
           <div className="mt-1 text-red-500 text-sm">
-            {errors.pic && <span>{errors.pic.message}</span>}
+            {errors.blog_pic && <span>{errors.blog_pic.message}</span>}
           </div>
           <div className="mt-6 flex justify-center">
             <Button

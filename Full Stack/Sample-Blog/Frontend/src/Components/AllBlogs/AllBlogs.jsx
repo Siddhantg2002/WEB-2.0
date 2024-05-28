@@ -2,7 +2,7 @@ import { Button } from "@cred/neopop-web/lib/components";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { SearchBar } from '@cred/neopop-web/lib/components';
-import { colorGuide,FontVariant } from '@cred/neopop-web/lib/primitives';
+import { colorGuide } from '@cred/neopop-web/lib/primitives';
 
 const AllBlogs = () => {
   const navigate = useNavigate();

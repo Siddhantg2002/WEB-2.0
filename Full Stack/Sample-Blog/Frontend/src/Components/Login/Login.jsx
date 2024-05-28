@@ -29,13 +29,12 @@ const Login = () => {
             credentials: 'include',
         });
         const result = await response.json();
-        console.log(result)
+
         if (response.ok) {
             login();
             navigate('/');
         } else {
-           const error = await response.json()
-           throw new Error(error.error)
+            throw new Error(result.error);
         }
     } catch (error) {
         console.error("Error:", error.message);
