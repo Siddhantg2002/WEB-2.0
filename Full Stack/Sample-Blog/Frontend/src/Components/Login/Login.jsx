@@ -6,42 +6,15 @@ import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
 import { useAuth } from '../../../Auth/AuthContext';
 import { useState } from "react";
+import { onSubmit } from "./OnSubmit";
 
 const Login = () => {
   const [CredentialError, setCredentialError]= useState(null)
-
   const navigate = useNavigate();
   const { login } = useAuth();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors},
-  } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit = async (data) => {
-    try {
-        const response = await fetch("http://localhost:3000/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-            credentials: 'include',
-        });
-        const result = await response.json();
-
-        if (response.ok) {
-            login();
-            navigate('/');
-        } else {
-            throw new Error(result.error);
-        }
-    } catch (error) {
-        console.error("Error:", error.message);
-        setCredentialError(error.message)
-    }
-};
-
+  
   return (
     <section className={style.login}>
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg lg:max-w-4xl">
@@ -49,7 +22,7 @@ const Login = () => {
           <Carousel />
         </div>
         <form 
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(data => onSubmit(data, login, setCredentialError, navigate))}
         className="w-full px-6 py-8 md:px-8 lg:w-1/2">
           <div className="flex justify-center mx-auto">
             <img

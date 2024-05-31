@@ -86,7 +86,7 @@ const YourBlogsContent = () => {
               <Button
                 variant="secondary"
                 kind="elevated"
-                size="big"
+                size="small"
                 colorMode="dark"
                 onClick={() => {
                   navigate(-1);

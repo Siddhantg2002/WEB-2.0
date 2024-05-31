@@ -11,6 +11,10 @@
   },
   "dependencies": {
     "@cred/neopop-web": "^1.0.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.19",
+    "@mui/material": "^5.15.19",
     "gulp": "^5.0.0",
     "gulp-sass": "^5.1.0",
     "js-cookie": "^3.0.5",

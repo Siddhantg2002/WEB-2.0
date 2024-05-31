@@ -1,6 +1,5 @@
 const express = require('express');
 const Latest_Blogs = require('../models/Latest_Blogs_schema');
-const error_handling = require("../middlewares/error")
 
 const router = express.Router();
 

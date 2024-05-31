@@ -12,6 +12,9 @@ router.get('/', async (req, res, next) => {
     const endIndex = page * limit;
     const results = {};
     const blogs = await All_Blogs.find();
+
+    results.total = limit * page
+
     if (endIndex < blogs.length) {
       results.next = {
         page: page + 1,

@@ -6,7 +6,7 @@ async function All_Blogs_feeding() {
   const blogsData = [
     {
       id: 1,
-      title: "Process Documents Using Artificial Intelligence For RPA Bots",
+      title: "Process Documents Using Artificial Intelligence For RPA Botss",
       description: "Earlier RPA bots used to have some limitations like it would take structured data for processing from excel, database, on these data. But with advancements in technology like OCR (Optical Character Recognition) and Machine Learning, RPA bots are capable of extracting these data …",
       body: fileData.file1,
       author: "Siddhant Gupta",

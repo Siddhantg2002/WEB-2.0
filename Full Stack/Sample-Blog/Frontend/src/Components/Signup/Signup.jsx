@@ -4,69 +4,31 @@ import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
 import validatePassword from "./ValidatePassword";
 import { useState, useEffect } from "react";
+import { onSubmit } from "./OnSubmit";
+import { handleToastMessages } from "./HandleToastMessages";
+import { redirect} from "./utils";
+
 
 const Signup = () => {
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting, isValid},
-  } = useForm();
+  const {register, handleSubmit,formState: { errors, isSubmitting, isValid, isSubmitSuccessful},} = useForm();
   const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessmessage] = useState("");
-
-  const delay = (d)=>{
-    return new Promise((resolve, reject)=>{
-      setTimeout(() => {
-        resolve()
-      }, d * 1000);
-    })
-  }
-
-  const onSubmit = async (data) => {
-    await delay(3)
-    try {
-      const response = await fetch("http://localhost:3000/sign-up", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message);
-      } else {
-        setSuccessmessage("Account created successfully");
-      }
-    } catch (error) {
-      console.error("Error:", error.message);
-      setErrorMessage(error.message);
-    }
-  };
+  const [successMessage, setSuccessMessage] = useState("");
 
 useEffect(() => {
-  if(errorMessage){
-      showToast(errorMessage, { type: 'error', autoCloseTime: '2000' });
-      setErrorMessage("")
-  }
-  if(isSubmitting && isValid){
-    showToast("Submitting...", { type: 'warning', autoCloseTime: '3000' });
-  }
-  if(successMessage ){
-    showToast(successMessage, { type: 'success', autoCloseTime: '2000' });
-    setSuccessmessage("")
-    
-  }
+  handleToastMessages( errorMessage,setErrorMessage,isSubmitting,isValid,successMessage,setSuccessMessage)
 }, [errorMessage, isSubmitting , successMessage])
+
+useEffect(() => {
+  redirect(navigate, isSubmitSuccessful)
+}, [isSubmitSuccessful]);
 
 
   return (
     <section className="bg-white">
        <ToastContainer />
       <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
-        <form className="w-full max-w-md" onSubmit={handleSubmit(onSubmit)}>
+        <form className="w-full max-w-md"  onSubmit={handleSubmit(data => onSubmit(data, setErrorMessage, setSuccessMessage))}>
           <div className="flex justify-center mx-auto">
             <img
               className="w-auto h-12 sm:h-8 cursor-pointer"

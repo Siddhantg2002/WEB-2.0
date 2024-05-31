@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const user_blog = require("../models/User_blogs_schema");
 const decryptJWT = require("../middlewares/Decryption");
-const upload = require("../middlewares/MediaSaver")
+const upload_blog_pic = require("../middlewares/BlogPicSaver")
 
-// POST request to create a new blog post
-router.post("/", decryptJWT, upload.single('BlogPic'), async (req, res, next) => {
+
+router.post("/", decryptJWT, upload_blog_pic.single('BlogPic'), async (req, res, next) => {
   try {
     const { title, content, date, author } = req.body;
     const image = req.file ? req.file.filename : null;

@@ -4,6 +4,10 @@
   justify-content: center;
   padding: 2px;
   box-shadow: 2px 9px 5px 0px rgba(51, 45, 36, 0.29);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: white;
 
 .div{
   height: fit-content;

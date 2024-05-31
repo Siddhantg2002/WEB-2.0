@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  image: {
+    type: String,
+    default: "placeholder.jpeg"
+  },
   createdAt: {
     type: Date,
     required: true,
@@ -25,8 +29,10 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre("save", async function (next) {
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
+  if (this.isModified("password")) {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+  }
   next();
 });
 
@@ -34,7 +40,7 @@ userSchema.post("save", function () {
   console.log("User created successfully");
 });
 
-//login search
+// Login search
 userSchema.statics.login = async function (email, password) {
   const user = await this.findOne({ email });
   if (user) {
@@ -42,9 +48,9 @@ userSchema.statics.login = async function (email, password) {
     if (auth) {
       return user;
     }
-    throw Error("Incorrect Password");
+    throw new Error("Incorrect Password");
   }
-  throw Error("Incorrect Email");
+  throw new Error("Incorrect Email");
 };
 
 const User = mongoose.model("User", userSchema);

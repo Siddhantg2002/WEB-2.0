@@ -48,7 +48,7 @@ const YourBlogs = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <section className="px-4 pt-3 pb-5 mb-36 mx-auto max-w-7xl">
+    <section className="px-4 pt-3 pb-5 mb-80 mx-auto max-w-7xl">
       <div className="flex justify-between pb-8 mb-12 text-2xl font-extrabold leading-tight text-gray-900 border-b border-gray-200 md:text-4xl">
         <h1>All Blogs</h1>
         <Button

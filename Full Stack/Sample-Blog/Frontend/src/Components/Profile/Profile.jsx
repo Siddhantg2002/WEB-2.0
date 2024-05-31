@@ -1,117 +1,184 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { Button } from "@cred/neopop-web/lib/components";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import isEmail from "validator/lib/isEmail";
+import SubmittedToast from "./Submitted";
+import SubmittingToast from "./Submitting";
+import { useNavigate } from "react-router-dom";
+import fetchUserDetails from "./fetchUserDetails";
+import onSubmit from "./OnSubmit";
+import { redirect} from "./utils";
 
 const Profile = () => {
-  // Initial state with dummy data
-  const [userData, setUserData] = useState({
-    username: 'JohnDoe',
-    email: 'johndoe@example.com',
-    password: '********',
-    profilePicture: 'https://via.placeholder.com/150',
-  });
+  const [users, setUsers] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [disable, setDisable] = useState(true);
+  const [initialValues, setInitialValues] = useState({});
+  const [preview, setPreview] = useState(null); // State for image preview
+  const navigate = useNavigate();
+  const {register,handleSubmit,formState: { errors, isSubmitting, isValid, isSubmitSuccessful },} = useForm();
 
-  // State for form inputs
-  const [formData, setFormData] = useState({
-    username: userData.username,
-    email: userData.email,
-    password: userData.password,
-    profilePicture: userData.profilePicture,
-  });
+  useEffect(() => {
+    fetchUserDetails(setUsers, setError, setLoading);
+  }, []);
 
-  // Function to handle form input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  useEffect(() => {
+    redirect(navigate, isSubmitSuccessful)
+  }, [isSubmitSuccessful]);
 
-  // Function to handle profile picture upload
-  const handlePictureUpload = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setFormData({ ...formData, profilePicture: reader.result });
-    };
-
+  const onSelectFile = (event) => {
+    const file = event.target.files[0];
     if (file) {
-      reader.readAsDataURL(file);
+      setPreview(URL.createObjectURL(file));
     }
   };
 
-  // Function to handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Send updated user data to backend
-    setUserData(formData);
-    // You can add API call here to update user data
-    console.log('Form submitted:', formData);
-  };
+  if (loading) {
+    return (
+      <div className="flex justify-center h-auto mb-96">
+        <span className="loading loading-bars loading-lg"></span>
+      </div>
+    );
+  }
+  if (error) return <p>{error}</p>;
 
   return (
-    <div className="max-w-md mx-auto my-8 p-6 bg-white rounded-lg shadow-xl">
-      <h2 className="text-2xl font-semibold mb-4">Edit Profile</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-            Username:
-          </label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            value={formData.username}
-            onChange={handleInputChange}
-            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-          />
+    <>
+      <div className="max-w-md mx-auto my-8 p-6 bg-white rounded-lg shadow-xl">
+        <div className="flex">
+          <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
+          <div
+            onClick={() => {
+              setDisable(false);
+            }}
+            className="relative left-2 cursor-pointer hover:scale-90 transition"
+          >
+            <ModeEditIcon />
+          </div>
         </div>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email:
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-            Password:
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="profilePicture" className="block text-sm font-medium text-gray-700">
-            Profile Picture:
-          </label>
-          <input
-            type="file"
-            id="profilePicture"
-            name="profilePicture"
-            accept="image/*"
-            onChange={handlePictureUpload}
-            className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-          />
-          <img
-            src={formData.profilePicture}
-            alt="Profile"
-            className="mt-2 h-24 w-24 object-cover rounded-full"
-          />
-        </div>
-        <button type="submit" className="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600">
-          Save Changes
-        </button>
-      </form>
-    </div>
+
+        {users.map((user, index) => (
+          <div key={index} className="mb-8">
+            <form
+              onSubmit={handleSubmit((data) => {
+                onSubmit(data, initialValues);
+              })}
+              encType="multipart/form-data"
+            >
+              <div className="flex justify-between">
+                <div className="mb-4">
+                  <label
+                    htmlFor={`username-${user.id}`}
+                    className="block text-xs font-medium text-gray-700"
+                  >
+                    Username:
+                  </label>
+                  <input
+                    type="text"
+                    id={`username-${user.id}`}
+                    defaultValue={user.username}
+                    className="mt-1 px-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    {...register("username", {
+                      minLength: { value: 5, message: "* Username too short" },
+                      maxLength: { value: 15, message: "* Username too long" },
+                    })}
+                    disabled={disable}
+                  />
+                  <div className="mt-1 text-red-500 text-sm">
+                    {errors.username && <span>{errors.username.message}</span>}
+                  </div>
+                </div>
+                <div className="relative bottom-10">
+                  {preview ? (
+                    <img
+                      src={preview}
+                      alt="Preview"
+                      className="size-28 object-cover rounded-full"
+                    />
+                  ) : (
+                    <img
+                      src={`../../../images/profiles/${user.image}`}
+                      alt="Preview"
+                      className="size-28 object-cover rounded-full"
+                    />
+                  )}
+                  <input
+                    type="file"
+                    id="fileInput"
+                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                    onChange={onSelectFile}
+                    disabled={disable}
+                    {...register("profile_pic")}
+                  />
+                </div>
+              </div>
+              <div className="relative bottom-12">
+                <div className="mb-4">
+                  <label
+                    htmlFor={`email-${user.id}`}
+                    className="block text-xs font-medium text-gray-700"
+                  >
+                    Email:
+                  </label>
+                  <input
+                    type="email"
+                    id={`email-${user.id}`}
+                    defaultValue={user.email}
+                    className="mt-1 px-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    {...register("email", {
+                      validate: (value) =>
+                        !value || isEmail(value) || "* Please enter a valid email",
+                    })}
+                    disabled={disable}
+                  />
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor={`password-${user.id}`}
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Password:
+                  </label>
+                  <input
+                    type="password"
+                    id={`password-${user.id}`}
+                    defaultValue="123456789"
+                    className="mt-1 px-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    {...register("password", {
+                      minLength: { value: 5, message: "* Password too short" },
+                      maxLength: { value: 15, message: "* Password too long" },
+                    })}
+                    disabled={disable}
+                  />
+                  <div className="mt-1 text-red-500 text-sm">
+                    {errors.password && <span>{errors.password.message}</span>}
+                  </div>
+                </div>
+                <div className="relative top-12 left-36 ">
+                  <Button
+                    variant="secondary"
+                    kind="elevated"
+                    size="small"
+                    colorMode="dark"
+                    type="submit"
+                    disabled={disable}
+                  >
+                    Save Changes
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </div>
+        ))}
+      </div>
+      <div className="flex justify-end">
+        {isSubmitting && isValid && <SubmittingToast />}
+        {isSubmitSuccessful && <SubmittedToast />}
+      </div>
+     
+    </>
   );
 };
 

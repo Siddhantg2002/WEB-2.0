@@ -17,7 +17,6 @@ export const AuthProvider = ({ children }) => {
 
   const login = () => {
     const token = Cookies.get('jwt');
-    const username= Cookies.get('username')
     if (token) {
       setIsAuthenticated(true);
     }
@@ -26,7 +25,6 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     Cookies.remove('jwt');
-    Cookies.remove('username');
     setIsAuthenticated(false);
   };
 

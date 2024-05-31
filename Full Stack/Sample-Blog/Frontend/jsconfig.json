@@ -14,11 +14,8 @@
             "@/*": [
                 "src/*"
             ],
-            "@Account/*": [
-                "src/Components/Account/*"
-            ],
-            "@AccountHome/*": [
-                "src/Components/AccountHome/*"
+            "@YourBlogsContent/*": [
+                "src/Components/YourBlogsContent/*"
             ]
         }
     }

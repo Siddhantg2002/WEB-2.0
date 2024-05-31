@@ -4,7 +4,6 @@ import { Button } from "@cred/neopop-web/lib/components";
 import SubmittingToast from "./SubmittingToast";
 import SubmittedToast from "./SubmittedToast";
 import { useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie';
 
 
 const UploadBlog = () => {

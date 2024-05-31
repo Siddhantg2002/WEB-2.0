@@ -3,6 +3,7 @@ import style from "./styles.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from '@cred/neopop-web/lib/components';
 import { useAuth } from '../../../Auth/AuthContext';  
+import Avatar from '@mui/material/Avatar';
 
 const Navbar = () => {
   const navigate = useNavigate();
