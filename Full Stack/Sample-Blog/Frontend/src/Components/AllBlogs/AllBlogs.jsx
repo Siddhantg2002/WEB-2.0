@@ -3,95 +3,45 @@ import { Button } from "@cred/neopop-web/lib/components";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import { SearchBar } from '@cred/neopop-web/lib/components';
 import { colorGuide } from '@cred/neopop-web/lib/primitives';
+import { handleNextClick, handlePreviousClick, handleReverse, handlelimit } from "../../utils/AllBlogs";
+import Loading from "./Loading";
+import Error from "./Error";
+import useFetch from "@utils/hooks/useFetch";
+
 
 const AllBlogs = () => {
   const navigate = useNavigate();
   const { page } = useParams(); // Get the current page from the URL params
   const [currentPage, setCurrentPage] = useState(parseInt(page) || 1); // Set default page to 1 if undefined
-  const [data, setData] = useState({ results: [] });
-  const [totalblogs, setTotalBlogs] = useState(null)
-  const [loading, setLoading] = useState(true);
   const [isReversed, setIsReversed] = useState(false);
   const [limit, setLimit] = useState(6)
 
-  const handleNextClick = () => {
-    if (data) {
-      const nextPage = currentPage + 1;
-      setCurrentPage(nextPage);
-      navigate(`/blogs/${nextPage}`);
-    }
-  };
+  const { data, setData, loading, error, totalblogs } = useFetch(
+    `http://localhost:3000/all-blogs?page=${currentPage}&limit=${limit}`, 
+    [currentPage, limit]
+  );
 
-  const handlePreviousClick = () => {
-    if (data) {
-      const previousPage = currentPage - 1;
-      setCurrentPage(previousPage);
-      navigate(`/blogs/${previousPage}`);
-    }
-  };
 
-  const handleChange = (value) => {
-    console.log('Search query: ', value);
-  };
+  // const handleChange = (value) => {
+  //   console.log('Search query: ', value);
+  // };
 
-  const handleSubmit = () => {
-    console.log('Search query submitted');
-  };
+  // const handleSubmit = () => {
+  //   console.log('Search query submitted');
+  // };
 
-  const handleReverse = () => {
-    const reversedResults = [...data.results].reverse();
-    setData({ ...data, results: reversedResults });
-    setIsReversed(!isReversed);
-  };
-  const handlelimit =()=>{
-    if(limit==6)
-     setLimit(12)
-    if(limit==12)
-      setLimit(6)
-  }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(
-          `http://localhost:3000/all-blogs?page=${currentPage}&limit=${limit}`
-        );
-        const result = await res.json();
-        setData(result);
-        setTotalBlogs(result.total)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [currentPage, limit]);
-  console.log(totalblogs)
 
   if (loading) {
-    return (
-      <section className="bg-white">
-        <div className="container px-6 py-10 mx-auto animate-pulse">
-          <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3">
-            {[...Array(8)].map((_, index) => (
-              <div className="w-full" key={index}>
-                <div className="w-full h-64 bg-gray-300 rounded-lg"></div>
-                <h1 className="w-56 h-2 mt-4 bg-gray-200 rounded-lg"></h1>
-                <p className="w-24 h-2 mt-4 bg-gray-200 rounded-lg"></p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
+    return <Loading />;
+  }
+  if (error) { 
+    return <Error />;
   }
 
   return (
     <section className="px-4 py-24 mx-auto max-w-7xl">
-      <h2 className="mb-2 text-3xl font-extrabold leading-tight text-gray-900">
+      <div>
+        <h2 className="mb-2 text-3xl font-extrabold leading-tight text-gray-900">
         Our Stories
       </h2>
       <div className="flex justify-between mb-4">
@@ -104,7 +54,7 @@ const AllBlogs = () => {
           kind="flat"
           size="small"
           colorMode="dark"
-          onClick={handlelimit}
+          onClick={()=>{handlelimit(setLimit, limit)}}
           disabled = {limit==6 && page>5}
         >
           {limit==6 ? 'See All' : 'See Less'}
@@ -114,7 +64,7 @@ const AllBlogs = () => {
           kind="flat"
           size="small"
           colorMode="dark"
-          onClick={handleReverse}
+          onClick={()=>{handleReverse(data, setData, setIsReversed, isReversed)}}
         >
           {isReversed ? 'Newest' : 'Oldest'}
         </Button>
@@ -127,9 +77,11 @@ const AllBlogs = () => {
           placeholder="search here"
           colorConfig={colorGuide.lightComponents.searchBar}
           inputColorConfig={colorGuide.lightComponents.inputFields}
-          handleSearchInput={handleChange}
-          onSubmit={handleSubmit}
+          // handleSearchInput={handleChange}
+          // onSubmit={handleSubmit}
         />
+      </div>
+      
       </div>
       
       {data.results && (
@@ -173,7 +125,7 @@ const AllBlogs = () => {
             kind="flat"
             size="big"
             colorMode="dark"
-            onClick={handlePreviousClick}
+            onClick={()=>{handlePreviousClick(setCurrentPage, currentPage, navigate)}}
           >
             Previous Page
           </Button>
@@ -184,7 +136,7 @@ const AllBlogs = () => {
             kind="elevated"
             size="big"
             colorMode="dark"
-            onClick={handleNextClick}
+            onClick={()=>{handleNextClick(setCurrentPage, currentPage, navigate)}}
           >
             Next Page
           </Button>

@@ -1,13 +1,9 @@
-import { Button,ToastContainer,showToast } from "@cred/neopop-web/lib/components";
+import { Button,ToastContainer } from "@cred/neopop-web/lib/components";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
-import validatePassword from "./ValidatePassword";
 import { useState, useEffect } from "react";
-import { onSubmit } from "./OnSubmit";
-import { handleToastMessages } from "./HandleToastMessages";
-import { redirect} from "./utils";
-
+import {redirect, validatePassword, onSubmit, handleToastMessages} from "@utils/Signup"
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -28,7 +24,7 @@ useEffect(() => {
     <section className="bg-white">
        <ToastContainer />
       <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
-        <form className="w-full max-w-md"  onSubmit={handleSubmit(data => onSubmit(data, setErrorMessage, setSuccessMessage))}>
+        <form className="w-full max-w-md"  onSubmit={handleSubmit((data) => onSubmit(data, setErrorMessage, setSuccessMessage))}>
           <div className="flex justify-center mx-auto">
             <img
               className="w-auto h-12 sm:h-8 cursor-pointer"

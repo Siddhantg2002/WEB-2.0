@@ -1,15 +1,23 @@
-import styles from "./styles.module.css"
-import { Link } from "react-router-dom"
+import styles from "./styles.module.css";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <footer className="text-gray-600 body-font">
       <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
-          <img  className="h-10" src="../../../images/home/Logo.png" alt="logo" />
-        <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
-          © 2024 Blog. —
-            @Siddhant Gupta
+        <img className="h-10" src="../../../images/home/Logo.png" alt="logo" />
+        <p className=" text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
+          © Copyright 2021. All Rights Reserved.
         </p>
+        <Link
+          to={"/privacy-policy"}
+          className=" hover:underline text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4"
+        >
+          Privacy Policy
+        </Link>
+        <Link className=" hover:underline text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
+          Contact Us
+        </Link>
         <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
           <Link to={"https://facebook.com/"} className="text-gray-500">
             <svg
@@ -35,7 +43,10 @@ const Footer = () => {
               <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
             </svg>
           </Link>
-          <Link to={"https://www.instagram.com/"} className="ml-3 text-gray-500">
+          <Link
+            to={"https://www.instagram.com/"}
+            className="ml-3 text-gray-500"
+          >
             <svg
               fill="none"
               stroke="currentColor"

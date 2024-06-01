@@ -10,6 +10,7 @@ const useFetch = (url) => {
     const fetchData = async () => {
       try {
         const token = Cookies.get("jwt");
+        setLoading(true);
         const response = await fetch(url, {
           method: "GET",
           headers: {
@@ -17,12 +18,14 @@ const useFetch = (url) => {
           },
         });
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          const errorResponse = await res.json();
+          throw new Error(`Error: ${errorResponse.message}`);
         }
         const result = await response.json();
         setData(result);
       } catch (error) {
-        setError(error.message);
+        setError(error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
@@ -31,7 +34,7 @@ const useFetch = (url) => {
     fetchData();
   }, [url]);
 
-  return { data, loading, error };
+  return { data,setData, loading, error };
 };
 
 export default useFetch;

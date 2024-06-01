@@ -1,26 +1,8 @@
-
+import useFetch from "@utils/hooks/useFetch";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 
 const Cards = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await fetch("http://localhost:3000/latest-blogs");
-        const result = await res.json();
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getData();
-  }, []);
+  const { data, loading } = useFetch(`http://localhost:3000/latest-blogs/`, []);
 
   return (
     <>

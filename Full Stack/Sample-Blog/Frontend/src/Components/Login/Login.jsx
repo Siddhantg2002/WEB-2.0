@@ -4,9 +4,9 @@ import Carousel from "@Components/Carousel/Carousel";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
-import { useAuth } from '../../../Auth/AuthContext';
+import { useAuth } from '@/Global/Auth/AuthContext';
 import { useState } from "react";
-import { onSubmit } from "./OnSubmit";
+import { onSubmit } from "@utils/Login";
 
 const Login = () => {
   const [CredentialError, setCredentialError]= useState(null)
@@ -22,13 +22,13 @@ const Login = () => {
           <Carousel />
         </div>
         <form 
-        onSubmit={handleSubmit(data => onSubmit(data, login, setCredentialError, navigate))}
+        onSubmit={handleSubmit((data) => onSubmit(data, login, setCredentialError, navigate))}
         className="w-full px-6 py-8 md:px-8 lg:w-1/2">
           <div className="flex justify-center mx-auto">
             <img
               className="w-auto h-7 sm:h-8 cursor-pointer"
               src="../../../images/home/Logo.png"
-              alt=""
+              alt="image"
               onClick={() => {
                 navigate("/");
               }}

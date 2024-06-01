@@ -14,8 +14,20 @@
             "@/*": [
                 "src/*"
             ],
-            "@YourBlogsContent/*": [
-                "src/Components/YourBlogsContent/*"
+            "@utils/*": [
+                "src/utils/*"
+            ],
+            "@Global/*": [
+                "src/Global/*"
+            ],
+            "@Content/*": [
+                "src/Global/Content/*"
+            ],
+            "@Pricing/*": [
+                "src/Components/Pricing/*"
+            ],
+            "@T&C/*": [
+                "src/Components/T&C/*"
             ]
         }
     }

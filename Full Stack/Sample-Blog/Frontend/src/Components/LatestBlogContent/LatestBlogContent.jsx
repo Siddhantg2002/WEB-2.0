@@ -1,28 +1,24 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import useFetch from "@utils/hooks/useFetch";
+import { useParams, useNavigate } from "react-router-dom";
+import { Button } from "@cred/neopop-web/lib/components";
 
-const Blog = () => {
-  const [blogs, setBlogs] = useState({});
+const LatestBlogContent = () => {
+  const navigate = useNavigate()
   const { id } = useParams();
+  const { data, loading } = useFetch(`http://localhost:3000/latest-blogs/${id}`, [id]);
+  const { title, body, image} = data;
+  console.log(title)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch(`http://localhost:3000/latest-blogs/${id}`);
-        const data = await res.json();
-        setBlogs(data);
-      } catch (error) {
-        console.error("Error fetching blog data:", error);
-      }
-    };
-    fetchData();
-  }, [id]);
 
-  if (!blogs) {
-    return <p>Loading...</p>;
+  if (loading) {
+    return (
+      <div className="flex justify-center h-svh">
+        <span className="loading loading-bars loading-lg"></span>
+      </div>
+    )
   }
-  const {title , body, image} = blogs
   return (
+    <>
     <article itemid="#" itemscope itemtype="http://schema.org/BlogPosting">
       <div class="grid items-center grid-cols-1 md:grid-cols-2">
         <div class="order-2 h-64 md:order-1 md:h-full">
@@ -63,7 +59,21 @@ const Blog = () => {
         </p>
       </div>
     </article>
+     <div className="flex justify-center">
+     <Button
+       variant="secondary"
+       kind="elevated"
+       size="small"
+       colorMode="dark"
+       onClick={() => {
+         navigate(-1);
+       }}
+     >
+       Go Back
+     </Button>
+   </div>
+   </>
   );
 };
 
-export default Blog;
+export default LatestBlogContent;

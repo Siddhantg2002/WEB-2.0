@@ -6,34 +6,24 @@ import isEmail from "validator/lib/isEmail";
 import SubmittedToast from "./Submitted";
 import SubmittingToast from "./Submitting";
 import { useNavigate } from "react-router-dom";
-import fetchUserDetails from "./fetchUserDetails";
-import onSubmit from "./OnSubmit";
-import { redirect} from "./utils";
+import { redirect, onSubmit, onSelectFile} from "@utils/Profile"
+// import useFetch from "@/utils/hooks/useFetch(auth)";
+import { useAdmin } from "@/Global/Admin/User";
+
 
 const Profile = () => {
-  const [users, setUsers] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const [disable, setDisable] = useState(true);
   const [initialValues, setInitialValues] = useState({});
   const [preview, setPreview] = useState(null); // State for image preview
-  const navigate = useNavigate();
   const {register,handleSubmit,formState: { errors, isSubmitting, isValid, isSubmitSuccessful },} = useForm();
+  // const { data, loading, error} = useFetch(`http://localhost:3000/users`, []);
+  const { data, loading, error} = useAdmin();
 
-  useEffect(() => {
-    fetchUserDetails(setUsers, setError, setLoading);
-  }, []);
 
   useEffect(() => {
     redirect(navigate, isSubmitSuccessful)
   }, [isSubmitSuccessful]);
-
-  const onSelectFile = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-    }
-  };
 
   if (loading) {
     return (
@@ -46,7 +36,7 @@ const Profile = () => {
 
   return (
     <>
-      <div className="max-w-md mx-auto my-8 p-6 bg-white rounded-lg shadow-xl">
+      <div className="max-w-md mx-auto mt-20 mb-48 p-6 bg-white rounded-lg shadow-xl">
         <div className="flex">
           <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
           <div
@@ -59,12 +49,10 @@ const Profile = () => {
           </div>
         </div>
 
-        {users.map((user, index) => (
+        {data.map((user, index) => (
           <div key={index} className="mb-8">
             <form
-              onSubmit={handleSubmit((data) => {
-                onSubmit(data, initialValues);
-              })}
+              onSubmit={handleSubmit((data) => {onSubmit(data, initialValues)})}
               encType="multipart/form-data"
             >
               <div className="flex justify-between">
@@ -108,7 +96,7 @@ const Profile = () => {
                     type="file"
                     id="fileInput"
                     className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                    onChange={onSelectFile}
+                    onChange={(event)=>{onSelectFile(event, setPreview)}}
                     disabled={disable}
                     {...register("profile_pic")}
                   />

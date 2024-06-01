@@ -1,29 +1,21 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate} from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@cred/neopop-web/lib/components";
+import useFetch from "@utils/hooks/useFetch";
 
 const AllBlogsContent = () => {
-  const [blogs, setBlogs] = useState({});
   const { id } = useParams();
   const navigate = useNavigate();
+  const { data, loading } = useFetch(`http://localhost:3000/all-blogs/${id}`, [id]);
+  const { title, body, image, date, author } = data;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch(`http://localhost:3000/all-blogs/${id}`);
-        const data = await res.json();
-        setBlogs(data);
-      } catch (error) {
-        console.error("Error fetching blog data:", error);
-      }
-    };
-    fetchData();
-  }, [id]);
-
-  if (!blogs) {
-    return <p>Loading...</p>;
+  if (loading) {
+    return (
+      <div className="flex h-svh justify-center">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
   }
-  const {title , body, image, date ,author} = blogs
+
   return (
     <article itemid="#" itemscope itemtype="http://schema.org/BlogPosting">
       <div class="grid items-center grid-cols-1 md:grid-cols-2">
@@ -48,7 +40,7 @@ const AllBlogsContent = () => {
             class="mb-5 text-3xl font-bold text-gray-900 md:leading-tight md:text-4xl"
             itemprop="headline"
           >
-           {title}
+            {title}
           </h1>
           <a class="flex items-center text-gray-700" href="#">
             <div class="ml-2">
@@ -59,23 +51,21 @@ const AllBlogsContent = () => {
       </div>
 
       <div class=" flex justify-center px-40 py-20 mx-auto prose">
-        <p>
-        {body}
-        </p>
+        <p>{body}</p>
       </div>
-      <div className='flex justify-center'>
-          <Button
-            variant="secondary"
-            kind="elevated"
-            size="big"
-            colorMode="dark"
-            onClick={() => {
-              navigate(-1);
-            }}
-          >
-            Go Back
-          </Button>
-        </div>
+      <div className="flex justify-center">
+        <Button
+          variant="secondary"
+          kind="elevated"
+          size="big"
+          colorMode="dark"
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          Go Back
+        </Button>
+      </div>
     </article>
   );
 };

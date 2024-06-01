@@ -18,3 +18,16 @@
   cursor: pointer;
   height: 2cm;
 }
+
+.user {
+  position: absolute;
+  left: 0.5cm;
+  top: 20px;
+}
+.user .name {
+  font-size: 1em;
+  color: #000000;
+  position: relative;
+  bottom: 0.8cm;
+  left: 1.2cm;
+}

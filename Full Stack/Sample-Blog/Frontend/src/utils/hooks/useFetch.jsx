@@ -4,6 +4,7 @@ const useFetch = (url, dependencies = []) => {
   const [data, setData] = useState({ results: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [totalblogs, setTotalBlogs] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -11,12 +12,15 @@ const useFetch = (url, dependencies = []) => {
         setLoading(true);
         const res = await fetch(url);
         if (!res.ok) {
-          throw new Error(`Error: ${res.statusText}`);
+          const errorResponse = await res.json();
+          throw new Error(`Error: ${errorResponse.message}`);
         }
         const result = await res.json();
         setData(result);
-      } catch (err) {
-        setError(err);
+        setTotalBlogs(result.total);
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
@@ -25,7 +29,7 @@ const useFetch = (url, dependencies = []) => {
     fetchData();
   }, dependencies);
 
-  return { data, loading, error ,setData };
+  return { data, setData, loading, error, totalblogs };
 };
 
 export default useFetch;

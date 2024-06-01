@@ -4,17 +4,20 @@ import HomePageLayout from '@/Layouts/HomePage';
 import ErrorPage from '@/Layouts/ErrorPage';
 import Home from '@/Components/Home/Home';
 import Login from '@Components/Login/Login';
-import Blog from '@Components/Blogs/Blog';
+import LatestBlogContent from '@Components/LatestBlogContent/LatestBlogContent';
 import AllBlogs from '@Components/AllBlogs/AllBlogs';
-import AllBlogsContent from '@Components/Blogs/AllBlogsContent';
+import AllBlogsContent from '@Components/AllBlogs/AllBlogsContent';
 import Signup from '@Components/Signup/Signup';
 import AccountPage from '@Layouts/AccountPage';
 import Profile from '@Components/Profile/Profile';
 import YourBlogs from '@Components/YourBlogs/YourBlogs';
 import UploadBlog from '@Components/UploadBlogs/UploadBlog';
 import AccountHome from '@Components/AccountHome/AccountHome';
-import ProtectedRoute from '../../Auth/ProtectedRoute';
+import ProtectedRoute from '../Global/Auth/ProtectedRoute';
 import YourBlogsContent from '@Components/YourBlogsContent/YourBlogsContent';
+import Pricing from '@Components/Pricing/Pricing';
+import PrivacyPolicy from '@Components/T&C/PrivacyPolicy';
+
 
 
 const routes = createBrowserRouter([
@@ -28,8 +31,12 @@ const routes = createBrowserRouter([
         element: <Home/>
       },
       {
+        path: '/privacy-policy',
+        element: <PrivacyPolicy/>
+      },
+      {
         path: 'blogs/blog/:id',
-        element: <Blog/>
+        element: <LatestBlogContent/>
       },
       {
         path: 'blogs/:page',
@@ -70,6 +77,10 @@ const routes = createBrowserRouter([
               {
                 path: 'upload-blog',
                 element: <UploadBlog/>
+              },
+              {
+                path: 'premium',
+                element: <Pricing/>
               }
             ]
           }
