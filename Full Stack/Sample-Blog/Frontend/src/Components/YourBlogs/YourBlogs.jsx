@@ -2,14 +2,16 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@cred/neopop-web/lib/components";
 import useFetch from "@/utils/hooks/useFetch(auth)";
-import { handleReverse, onClick } from "@utils/YourBlogs";
-import DeleteIcon from '@mui/icons-material/Delete';
-
+import { handleReverse, onDelete } from "@utils/YourBlogs";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import SimpleSnackbar from "./SimpleSnackBar";
 
 const YourBlogs = () => {
   const [isReversed, setIsReversed] = useState(false);
-  const { data, setData, loading, error } = useFetch(`http://localhost:3000/user-blogs`, []);
-
+  const { data, setData, loading, error } = useFetch(`http://localhost:3000/user-blogs`,[]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   if (loading)
     return (
@@ -66,11 +68,15 @@ const YourBlogs = () => {
                     <Link to={`${blog._id}`} className="btn btn-light btn-sm">
                       Read More
                     </Link>
-                    <div 
-                      onClick={() => onClick(blog._id,setData,data)}
+                    <div
+                      onClick={() => onDelete(blog._id, setData, data, setSnackbarOpen)}
                       className="scale-75 cursor-pointer hover:scale-90 hover:rotate-6 transition"
                     >
-                      <DeleteIcon/>
+                      <Tooltip title="Delete">
+                        <IconButton>
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
                     </div>
                   </div>
                 </div>
@@ -83,8 +89,10 @@ const YourBlogs = () => {
           <p>No blogs found.</p>
         </div>
       )}
+      <SimpleSnackbar open={snackbarOpen} setOpen={setSnackbarOpen} />
     </section>
   );
 };
 
 export default YourBlogs;
+

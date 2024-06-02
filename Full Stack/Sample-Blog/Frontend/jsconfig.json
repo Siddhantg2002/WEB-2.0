@@ -20,8 +20,8 @@
             "@Global/*": [
                 "src/Global/*"
             ],
-            "@Content/*": [
-                "src/Global/Content/*"
+            "@ContactUs/*": [
+                "src/Components/ContactUs/*"
             ],
             "@Pricing/*": [
                 "src/Components/Pricing/*"

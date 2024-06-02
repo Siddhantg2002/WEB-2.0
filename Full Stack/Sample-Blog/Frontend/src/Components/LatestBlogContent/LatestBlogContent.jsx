@@ -7,8 +7,6 @@ const LatestBlogContent = () => {
   const { id } = useParams();
   const { data, loading } = useFetch(`http://localhost:3000/latest-blogs/${id}`, [id]);
   const { title, body, image} = data;
-  console.log(title)
-
 
   if (loading) {
     return (

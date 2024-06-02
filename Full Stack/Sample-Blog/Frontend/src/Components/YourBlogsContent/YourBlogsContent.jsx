@@ -7,14 +7,14 @@ import Loading from "./Loading"; // Import the Loading component
 const YourBlogsContent = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data, loading, error } = useFetch(`http://localhost:3000/user-blogs-content/${id}`, [id]);
+  const { data, loading, error } = useFetch(`http://localhost:3000/user-blogs-content/${id}`,[id]);
 
   if (error) return <p>{error}</p>;
-  if (loading) return <Loading/>;
+  if (loading) return <Loading />;
 
   return (
     <>
-      {data.map(blog => (
+      {data.map((blog) => (
         <article
           key={blog.id} // Assuming blog.id exists and is unique
           itemScope
@@ -43,13 +43,22 @@ const YourBlogsContent = () => {
               >
                 {blog.title}
               </h1>
-              <a className="flex items-center text-gray-700" href="#">
-                <div className="ml-2">
-                  <p className="text-sm font-semibold text-gray-800">
-                    {blog.author}
-                  </p>
-                </div>
-              </a>
+              <div className="ml-2 flex items-center text-gray-700">
+                <p className="text-sm font-semibold text-gray-800">
+                  {blog.author}
+                </p>
+              </div>
+              <div className="mt-6 relative left-3">
+                <Button
+                  variant="secondary"
+                  kind="flat"
+                  size="small"
+                  colorMode="dark"
+                  showArrow
+                >
+                  Publish
+                </Button>
+              </div>
             </div>
           </div>
 

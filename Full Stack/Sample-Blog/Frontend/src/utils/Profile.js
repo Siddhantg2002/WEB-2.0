@@ -58,5 +58,24 @@ const onSubmit = async (data, initialValues) => {
   }
 };
 
+const onDelete = async () => {
+  if (window.confirm("Are you sure you want to delete your profile picture?")) {
+    const token = Cookies.get("jwt");
+    try {
+      const response = await fetch("http://localhost:3000/users", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response) {
+        const result = await response.json();
+        console.log(result);
+      }
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
+  }
+};
 
-export { redirect, onSubmit,onSelectFile};
+export { redirect, onSubmit, onSelectFile, onDelete };

@@ -9,20 +9,12 @@ import Avatar from "@mui/material/Avatar";
 const Navbar = () => {
   const navigate = useNavigate();
   const { isAuthenticated, logout } = useAuth();
-  const { data, loading, error } = useAdmin();
+  const { data } = useAdmin();
 
   const handleLogout = () => {
     logout();
     navigate("/");
   };
-
-  if (loading) {
-    return <span className="loading loading-spinner loading-lg"></span>;
-  }
-
-  if (error) {
-    return <div>Something went wrong</div>;
-  }
 
   return (
     <header className={style.Navbar}>
@@ -60,7 +52,7 @@ const Navbar = () => {
             <div key={index}>
               <Link to={'/account/profile'}>
               <Avatar
-                alt="User Pic"
+                alt={user.username}
                 src={`../../../images/profiles/${user.image}`}
               />
               </Link>

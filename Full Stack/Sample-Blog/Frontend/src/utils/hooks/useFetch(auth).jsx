@@ -18,7 +18,7 @@ const useFetch = (url) => {
           },
         });
         if (!response.ok) {
-          const errorResponse = await res.json();
+          const errorResponse = await response.json();
           throw new Error(`Error: ${errorResponse.message}`);
         }
         const result = await response.json();

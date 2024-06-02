@@ -8,8 +8,8 @@ const delay = (d) => {
   });
 };
 
-const redirect = async (navigate, isSubmitSuccessful) => {
-  if (isSubmitSuccessful) {
+const redirect = async (navigate, isSubmitSuccessful, errorMessage) => {
+  if (isSubmitSuccessful && !errorMessage) {
     await delay(2);
     navigate("/login");
   }

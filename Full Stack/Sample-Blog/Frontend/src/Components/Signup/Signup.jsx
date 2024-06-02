@@ -16,7 +16,7 @@ useEffect(() => {
 }, [errorMessage, isSubmitting , successMessage])
 
 useEffect(() => {
-  redirect(navigate, isSubmitSuccessful)
+  redirect(navigate, isSubmitSuccessful, errorMessage)
 }, [isSubmitSuccessful]);
 
 

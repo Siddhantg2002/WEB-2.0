@@ -14,7 +14,6 @@ const Login = () => {
   const { login } = useAuth();
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  
   return (
     <section className={style.login}>
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg lg:max-w-4xl">

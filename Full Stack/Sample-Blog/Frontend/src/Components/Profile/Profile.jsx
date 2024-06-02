@@ -6,23 +6,30 @@ import isEmail from "validator/lib/isEmail";
 import SubmittedToast from "./Submitted";
 import SubmittingToast from "./Submitting";
 import { useNavigate } from "react-router-dom";
-import { redirect, onSubmit, onSelectFile} from "@utils/Profile"
+import { redirect, onSubmit, onSelectFile, onDelete } from "@utils/Profile";
 // import useFetch from "@/utils/hooks/useFetch(auth)";
 import { useAdmin } from "@/Global/Admin/User";
-
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import styles from "./styles.module.css";
 
 const Profile = () => {
   const navigate = useNavigate();
   const [disable, setDisable] = useState(true);
   const [initialValues, setInitialValues] = useState({});
   const [preview, setPreview] = useState(null); // State for image preview
-  const {register,handleSubmit,formState: { errors, isSubmitting, isValid, isSubmitSuccessful },} = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isValid, isSubmitSuccessful },
+  } = useForm();
   // const { data, loading, error} = useFetch(`http://localhost:3000/users`, []);
-  const { data, loading, error} = useAdmin();
-
+  const { data, loading, error } = useAdmin();
 
   useEffect(() => {
-    redirect(navigate, isSubmitSuccessful)
+    redirect(navigate, isSubmitSuccessful);
   }, [isSubmitSuccessful]);
 
   if (loading) {
@@ -35,24 +42,28 @@ const Profile = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <>
-      <div className="max-w-md mx-auto mt-20 mb-48 p-6 bg-white rounded-lg shadow-xl">
-        <div className="flex">
-          <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
-          <div
-            onClick={() => {
-              setDisable(false);
-            }}
-            className="relative left-2 cursor-pointer hover:scale-90 transition"
-          >
-            <ModeEditIcon />
-          </div>
+    <section className={styles.background}>
+      <div className="max-w-xs mx-auto mb-48 p-6 bg-white rounded-3xl relative top-24">
+        <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
+        <div
+          onClick={() => {
+            setDisable(false);
+          }}
+          className="relative left-32 bottom-14 cursor-pointer hover:scale-90 transition w-fit"
+        >
+          <Tooltip title="Edit">
+            <IconButton>
+              <ModeEditIcon />
+            </IconButton>
+          </Tooltip>
         </div>
 
         {data.map((user, index) => (
           <div key={index} className="mb-8">
             <form
-              onSubmit={handleSubmit((data) => {onSubmit(data, initialValues)})}
+              onSubmit={handleSubmit((data) => {
+                onSubmit(data, initialValues);
+              })}
               encType="multipart/form-data"
             >
               <div className="flex justify-between">
@@ -78,25 +89,34 @@ const Profile = () => {
                     {errors.username && <span>{errors.username.message}</span>}
                   </div>
                 </div>
-                <div className="relative bottom-10">
-                  {preview ? (
-                    <img
-                      src={preview}
-                      alt="Preview"
-                      className="size-28 object-cover rounded-full"
-                    />
-                  ) : (
-                    <img
-                      src={`../../../images/profiles/${user.image}`}
-                      alt="Preview"
-                      className="size-28 object-cover rounded-full"
-                    />
+                <div className="relative bottom-10 ">
+                  <Avatar
+                    alt={user.username}
+                    src={`../../../images/profiles/${user.image}`}
+                    sx={{ width: 100, height: 100 }}
+                  />
+                  {!disable && (
+                    <div
+                      onClick={() => {
+                        onDelete();
+                      }}
+                      className="absolute z-10 left-16 top-20 scale-75 cursor-pointer hover:scale-90 hover:rotate-6 transition"
+                    >
+                      <Tooltip title="Delete">
+                        <IconButton>
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </div>
                   )}
+
                   <input
                     type="file"
                     id="fileInput"
                     className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                    onChange={(event)=>{onSelectFile(event, setPreview)}}
+                    onChange={(event) => {
+                      onSelectFile(event, setPreview);
+                    }}
                     disabled={disable}
                     {...register("profile_pic")}
                   />
@@ -117,7 +137,9 @@ const Profile = () => {
                     className="mt-1 px-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     {...register("email", {
                       validate: (value) =>
-                        !value || isEmail(value) || "* Please enter a valid email",
+                        !value ||
+                        isEmail(value) ||
+                        "* Please enter a valid email",
                     })}
                     disabled={disable}
                   />
@@ -144,17 +166,31 @@ const Profile = () => {
                     {errors.password && <span>{errors.password.message}</span>}
                   </div>
                 </div>
-                <div className="relative top-12 left-36 ">
-                  <Button
-                    variant="secondary"
-                    kind="elevated"
-                    size="small"
-                    colorMode="dark"
-                    type="submit"
-                    disabled={disable}
-                  >
-                    Save Changes
-                  </Button>
+                <div className="flex relative gap-8 top-16">
+                  {!disable && (
+                    <Button
+                      variant="secondary"
+                      kind="elevated"
+                      size="small"
+                      colorMode="dark"
+                      type="submit"
+                      disabled={disable}
+                    >
+                      Save Changes
+                    </Button>
+                  )}
+                  {!disable && (
+                    <Button
+                      variant="secondary"
+                      kind="elevated"
+                      size="small"
+                      colorMode="dark"
+                      type="submit"
+                      disabled={disable}
+                    >
+                      Delete Account
+                    </Button>
+                  )}
                 </div>
               </div>
             </form>
@@ -165,8 +201,7 @@ const Profile = () => {
         {isSubmitting && isValid && <SubmittingToast />}
         {isSubmitSuccessful && <SubmittedToast />}
       </div>
-     
-    </>
+    </section>
   );
 };
 

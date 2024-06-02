@@ -17,8 +17,7 @@ import ProtectedRoute from '../Global/Auth/ProtectedRoute';
 import YourBlogsContent from '@Components/YourBlogsContent/YourBlogsContent';
 import Pricing from '@Components/Pricing/Pricing';
 import PrivacyPolicy from '@Components/T&C/PrivacyPolicy';
-
-
+import ContactUs from '@Components/ContactUs/ContactUs';
 
 const routes = createBrowserRouter([
   {
@@ -33,6 +32,10 @@ const routes = createBrowserRouter([
       {
         path: '/privacy-policy',
         element: <PrivacyPolicy/>
+      },
+      {
+        path: '/contact-us',
+        element: <ContactUs/>
       },
       {
         path: 'blogs/blog/:id',

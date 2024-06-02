@@ -16,10 +16,7 @@ const AllBlogs = () => {
   const [isReversed, setIsReversed] = useState(false);
   const [limit, setLimit] = useState(6)
 
-  const { data, setData, loading, error, totalblogs } = useFetch(
-    `http://localhost:3000/all-blogs?page=${currentPage}&limit=${limit}`, 
-    [currentPage, limit]
-  );
+  const { data, setData, loading, error, totalblogs } = useFetch(`http://localhost:3000/all-blogs?page=${currentPage}&limit=${limit}`, [currentPage, limit]);
 
 
   // const handleChange = (value) => {

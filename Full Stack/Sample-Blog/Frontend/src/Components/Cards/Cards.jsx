@@ -2,7 +2,7 @@ import useFetch from "@utils/hooks/useFetch";
 import { Link } from "react-router-dom";
 
 const Cards = () => {
-  const { data, loading } = useFetch(`http://localhost:3000/latest-blogs/`, []);
+  const { data, loading } = useFetch(`http://localhost:3000/latest-blogs`, []);
 
   return (
     <>
