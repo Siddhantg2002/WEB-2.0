@@ -1,4 +1,6 @@
 import Cookies from 'js-cookie';
+const google_token = Cookies.get('google_jwt')
+const token = Cookies.get('jwt');
 
 const delay = (d) => {
     return new Promise((resolve, reject) => {
@@ -11,7 +13,6 @@ const delay = (d) => {
 const onSubmit = async (data) => {
     await delay(3)
     try {
-      const token = Cookies.get('jwt');
 
       const formData = new FormData();
       Object.keys(data).forEach(key => formData.append(key, data[key]));
@@ -20,7 +21,7 @@ const onSubmit = async (data) => {
       const response = await fetch("http://localhost:3000/user-blogs", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${token}`, 
+          "Authorization": `Bearer ${token || google_token}`, 
         },
         body: formData,
       });

@@ -10,11 +10,12 @@ const useFetch = (url) => {
     const fetchData = async () => {
       try {
         const token = Cookies.get("jwt");
+        const google_token = Cookies.get("google_jwt")
         setLoading(true);
         const response = await fetch(url, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token||google_token}`,
           },
         });
         if (!response.ok) {

@@ -18,6 +18,9 @@ import YourBlogsContent from '@Components/YourBlogsContent/YourBlogsContent';
 import Pricing from '@Components/Pricing/Pricing';
 import PrivacyPolicy from '@Components/T&C/PrivacyPolicy';
 import ContactUs from '@Components/ContactUs/ContactUs';
+import ForgotPassword from '@Components/ForgetPassword/ForgetPassword';
+import VerifyOTP from '@Components/VerifyOTP/VerifyOTP';
+import ResetPassword from '@Components/ResetPassword/ResetPassword';
 
 const routes = createBrowserRouter([
   {
@@ -98,6 +101,18 @@ const routes = createBrowserRouter([
   {
     path: '/sign-up',
     element: <Signup />
+  },
+  {
+    path: '/forget-password',
+    element: <ForgotPassword />
+  },
+  {
+    path: '/verify-otp',
+    element: <VerifyOTP/>
+  },
+  {
+    path: '/reset-password',
+    element: <ResetPassword/>
   }
 ]);
 

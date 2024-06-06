@@ -6,9 +6,10 @@ import isEmail from "validator/lib/isEmail";
 import SubmittedToast from "./Submitted";
 import SubmittingToast from "./Submitting";
 import { useNavigate } from "react-router-dom";
-import { redirect, onSubmit, onSelectFile, onDelete } from "@utils/Profile";
+import { redirect, onSubmit, onSelectFile, onDeleteProfilePic , onDeleteAccount } from "@utils/Profile";
 // import useFetch from "@/utils/hooks/useFetch(auth)";
 import { useAdmin } from "@/Global/Admin/User";
+import { useAuth } from "@/Global/Auth/AuthContext";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -16,15 +17,12 @@ import IconButton from "@mui/material/IconButton";
 import styles from "./styles.module.css";
 
 const Profile = () => {
+  const {logout} = useAuth()
   const navigate = useNavigate();
   const [disable, setDisable] = useState(true);
   const [initialValues, setInitialValues] = useState({});
   const [preview, setPreview] = useState(null); // State for image preview
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting, isValid, isSubmitSuccessful },
-  } = useForm();
+  const {register,handleSubmit,formState: { errors, isSubmitting, isValid, isSubmitSuccessful },} = useForm();
   // const { data, loading, error} = useFetch(`http://localhost:3000/users`, []);
   const { data, loading, error } = useAdmin();
 
@@ -97,9 +95,7 @@ const Profile = () => {
                   />
                   {!disable && (
                     <div
-                      onClick={() => {
-                        onDelete();
-                      }}
+                      onClick={() => {onDeleteProfilePic()}}
                       className="absolute z-10 left-16 top-20 scale-75 cursor-pointer hover:scale-90 hover:rotate-6 transition"
                     >
                       <Tooltip title="Delete">
@@ -187,6 +183,7 @@ const Profile = () => {
                       colorMode="dark"
                       type="submit"
                       disabled={disable}
+                      onClick={()=>{onDeleteAccount(logout, navigate)}}
                     >
                       Delete Account
                     </Button>

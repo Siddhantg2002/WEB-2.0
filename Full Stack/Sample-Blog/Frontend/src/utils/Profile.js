@@ -1,4 +1,6 @@
 import Cookies from "js-cookie";
+const token = Cookies.get("jwt");
+const google_token = Cookies.get('google_jwt')
 
 const delay = (d) => {
   return new Promise((resolve, reject) => {
@@ -14,6 +16,7 @@ const redirect = async (navigate, isSubmitSuccessful) => {
     navigate("/account/home");
   }
 };
+
 const onSelectFile = (event, setPreview) => {
   const file = event.target.files[0];
   if (file) {
@@ -24,7 +27,6 @@ const onSelectFile = (event, setPreview) => {
 const onSubmit = async (data, initialValues) => {
   await delay(2);
   try {
-    const token = Cookies.get("jwt");
     const formData = new FormData();
 
     // Loop through form data and append only changed fields to FormData
@@ -41,7 +43,7 @@ const onSubmit = async (data, initialValues) => {
     const response = await fetch("http://localhost:3000/users", {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token || google_token}`,
       },
       body: formData,
     });
@@ -58,14 +60,13 @@ const onSubmit = async (data, initialValues) => {
   }
 };
 
-const onDelete = async () => {
+const onDeleteProfilePic = async () => {
   if (window.confirm("Are you sure you want to delete your profile picture?")) {
-    const token = Cookies.get("jwt");
     try {
-      const response = await fetch("http://localhost:3000/users", {
+      const response = await fetch("http://localhost:3000/users/image", {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token || google_token}`,
         },
       });
       if (response) {
@@ -78,4 +79,25 @@ const onDelete = async () => {
   }
 };
 
-export { redirect, onSubmit, onSelectFile, onDelete };
+const onDeleteAccount = async (logout,navigate) => {
+  if (window.confirm("Are you sure you want to delete your Account?")) {
+    try {
+      const response = await fetch("http://localhost:3000/users", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token || google_token}`,
+        },
+      });
+      if (response) {
+        const result = await response.json();
+        console.log(result);
+        await logout()
+        navigate("/")
+      }
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
+  }
+};
+
+export { redirect, onSubmit, onSelectFile, onDeleteProfilePic ,onDeleteAccount };

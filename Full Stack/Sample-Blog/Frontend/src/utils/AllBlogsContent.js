@@ -1,4 +1,7 @@
 import Cookies from "js-cookie";
+const google_token = Cookies.get('google_jwt')
+const token = Cookies.get('jwt')
+
 
 const handleLikeClick = async (setLikeStatus, likeStatus, id) => {
     const newStatus = likeStatus === true ? null : true;
@@ -9,7 +12,7 @@ const handleLikeClick = async (setLikeStatus, likeStatus, id) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${Cookies.get('jwt')}`, // Adjust as needed
+          'Authorization': `Bearer ${token || google_token}`, 
         },
         body: JSON.stringify({ action: 'like' }),
       });
@@ -37,7 +40,7 @@ const handleDislikeClick = async (setLikeStatus, likeStatus, id) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${Cookies.get('jwt')}`, // Adjust as needed
+          'Authorization': `Bearer ${token || google_token}`,
         },
         body: JSON.stringify({ action: 'dislike' }),
       });
@@ -57,12 +60,11 @@ const handleDislikeClick = async (setLikeStatus, likeStatus, id) => {
   };  
 
 const fetchLikeStatus = async (isAuthenticated, id, setLikeStatus) => {
-    const token = Cookies.get("jwt");
     if (isAuthenticated) {
       try {
         const response = await fetch(`http://localhost:3000/all-blogs/${id}/status`, {
           headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${token || google_token}`,
           },
         });
         const result = await response.json();

@@ -6,25 +6,27 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const token = Cookies.get('jwt');
+  const google_token = Cookies.get('google_jwt');
 
   useEffect(() => {
-    const token = Cookies.get('jwt');
-    if (token) {
+    if (token || google_token) {
       setIsAuthenticated(true);
     }
     setLoading(false);
-  }, []);
+  }, [token, google_token]);
 
   const login = () => {
-    const token = Cookies.get('jwt');
-    if (token) {
+    if (token || google_token) {
       setIsAuthenticated(true);
+    } else {
+      console.log("No token found");
     }
-
   };
 
   const logout = () => {
     Cookies.remove('jwt');
+    Cookies.remove('google_jwt');
     setIsAuthenticated(false);
   };
 

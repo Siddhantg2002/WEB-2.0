@@ -21,9 +21,7 @@ router.post("/", decryptJWT, upload_blog_pic.single('BlogPic'), async (req, res,
 
     await blog.save();
 
-    res.status(201).json({
-      message: "Blog post created successfully",
-    });
+    res.status(201).json({message: "Blog post created successfully"});
   } catch (error) {
     next(error);
   }

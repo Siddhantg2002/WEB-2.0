@@ -29,6 +29,14 @@ const blogSchema = new mongoose.Schema({
   image: {
     type: String,
   },
+  likes:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Users"
+  }],
+  dislikes:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Users"
+  }],
   createAt: {
     type: Date,
     required: true,

@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: true,
     unique: true,
   },
   email: {
@@ -15,12 +14,17 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
   },
   image: {
     type: String,
-    default: "placeholder.jpeg"
+    default: "placeholder.jpeg",
   },
+  resetToken: {
+    type: String,
+    unique: true,
+  },
+  expiry_of_Token : Date,
+
   createdAt: {
     type: Date,
     required: true,
@@ -31,7 +35,7 @@ const userSchema = new mongoose.Schema({
 userSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     const salt = await bcrypt.genSalt();
-    this.password = await bcrypt.hash(this.password, salt);
+    this.password = bcrypt.hash(this.password, salt);
   }
   next();
 });
