@@ -3,37 +3,17 @@ import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
 import { useAuth } from '@/Global/Auth/AuthContext';
-import { onSubmit } from "@utils/Login";
+import { onSubmit, handleGoogleLoginSuccess, handleGoogleLoginError } from "@utils/Login";
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import style from "./styles.module.css";
 import { Button } from "@cred/neopop-web/lib/components";
 import Carousel from "@Components/Carousel/Carousel";
-import Cookies from 'js-cookie';
-import axios from 'axios';
 
 const Login = () => {
   const [CredentialError, setCredentialError] = useState(null);
   const navigate = useNavigate();
   const { login } = useAuth();
   const { register, handleSubmit, formState: { errors } } = useForm();
-
-  const handleGoogleLoginSuccess = async (response) => {
-    const token = response.credential;
-    try {
-      const res = await axios.post('http://localhost:3000/Oauth/google-login', { token });
-      Cookies.set('google_jwt', res.data.JWT);
-      login();
-      navigate('/');
-    } catch (error) {
-      console.error('Google login failed:', error);
-      setCredentialError('Google login failed. Please try again.');
-    }
-  };
-
-  const handleGoogleLoginError = () => {
-    console.log('Login Failed');
-    setCredentialError('Google login failed. Please try again.');
-  };
 
   return (
     <GoogleOAuthProvider clientId="343165432518-e7c46hq021lbsdmo8d43jbgk3mdog0nf.apps.googleusercontent.com">
@@ -59,8 +39,8 @@ const Login = () => {
             </p>
             <div className="flex items-center justify-center mt-4">
               <GoogleLogin
-                onSuccess={handleGoogleLoginSuccess}
-                onError={handleGoogleLoginError}
+                onSuccess={(response) => handleGoogleLoginSuccess(response, login, navigate, setCredentialError)}
+                onError={() => handleGoogleLoginError(setCredentialError)}
                 useOneTap
               />
             </div>
@@ -115,7 +95,7 @@ const Login = () => {
             <div className="mt-1 text-red-500 text-sm">
               {errors.password && <span>{errors.password.message}</span>}
             </div>
-            <div className=" flex justify-center mt-3 text-red-500 text-sm font-semibold">
+            <div className="flex justify-center mt-3 text-red-500 text-sm font-semibold">
               {CredentialError}
             </div>
             <div className="mt-6 flex justify-center">
@@ -125,6 +105,7 @@ const Login = () => {
                 size="small"
                 colorMode="dark"
                 showArrow
+                type="submit" // Ensuring the button submits the form
               >
                 Sign In
               </Button>

@@ -7,9 +7,11 @@ import {redirect, validatePassword, onSubmit, handleToastMessages} from "@utils/
 
 const Signup = () => {
   const navigate = useNavigate();
-  const {register, handleSubmit,formState: { errors, isSubmitting, isValid, isSubmitSuccessful},} = useForm();
+  const {register, handleSubmit,watch,formState: { errors, isSubmitting, isValid, isSubmitSuccessful},} = useForm();
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 useEffect(() => {
   handleToastMessages( errorMessage,setErrorMessage,isSubmitting,isValid,successMessage,setSuccessMessage)
@@ -102,38 +104,89 @@ useEffect(() => {
           </div>
 
           <div className="relative flex items-center mt-4">
-            <span className="absolute">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6 mx-3 text-gray-300"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
-            </span>
+          <span className="absolute">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6 mx-3 text-gray-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
+            </svg>
+          </span>
 
-            <input
-              type="password"
-              className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              placeholder="Password"
-              {...register("password", {
-                required: "* Password is required",
-                minLength: { value: 5, message: "* Password too short" },
-                maxLength: { value: 15, message: "* Password too long" },
-                validate: validatePassword,
-              })}
-            />
-          </div>
-          <div className="mt-1 text-red-500 text-sm">
-            {errors.password && <span>{errors.password.message}</span>}
-          </div>
+          <input
+            type={showPassword ? "text" : "password"}
+            className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+            placeholder="Password"
+            {...register("password", {
+              required: "* Password is required",
+              minLength: { value: 5, message: "* Password too short" },
+              maxLength: { value: 15, message: "* Password too long" },
+              validate: validatePassword,
+            })}
+          />
+          <button
+            type="button"
+            className="absolute right-3"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
+        <div className="mt-1 text-red-500 text-sm">
+          {errors.password && <span>{errors.password.message}</span>}
+        </div>
+
+        <div className="relative flex items-center mt-4">
+          <span className="absolute">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6 mx-3 text-gray-300"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
+            </svg>
+          </span>
+
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+            placeholder="Confirm Password"
+            onCopy={(e) => e.preventDefault()}
+            onPaste={(e) => e.preventDefault()}
+            {...register("confirm_password", {
+              required: "* Confirm Password is required",
+              validate: (value) =>
+                value === watch("password") || "* Passwords do not match",
+            })}
+          />
+          <button
+            type="button"
+            className="absolute right-3"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            {showConfirmPassword ? "Hide" : "Show"}
+          </button>
+        </div>
+        <div className="mt-1 text-red-500 text-sm">
+          {errors.confirm_password && (
+            <span>{errors.confirm_password.message}</span>
+          )}
+        </div>
 
           <div className="mt-6 flex justify-center">
             <Button

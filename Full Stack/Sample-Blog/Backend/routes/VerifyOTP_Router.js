@@ -5,17 +5,14 @@ const User = require("../models/user_schema");
 router.post("/", async (req, res, next) => {
     try {
       const { token } = req.body;
-      
       const user = await User.findOne({ resetToken: token });
-    
+  
       if (!user) {
         return res.status(400).json({ error: "Invalid OTP" });
       }
-  
       if (user.resetToken !== token) {
         return res.status(400).json({ error: "Invalid OTP" });
       }
-  
       if (user.expiry_of_Token < Date.now()) {
         return res.status(400).json({ error: "OTP expired" });
       }

@@ -4,23 +4,25 @@ import { Button } from "@cred/neopop-web/lib/components";
 import SubmittingToast from "./SubmittingToast";
 import SubmittedToast from "./SubmittedToast";
 import { useNavigate } from "react-router-dom";
-import { onSubmit,handleFileChange,redirect } from "@/utils/UploadBlogs";
-
+import { onSubmit, handleFileChange, redirect } from "@/utils/UploadBlogs";
 
 const UploadBlog = () => {
   const [preview, setPreview] = useState(null);
-  const navigate = useNavigate()
-  const {register, handleSubmit,formState: { errors, isSubmitting, isValid, isSubmitSuccessful },} = useForm();
+  const navigate = useNavigate();
+  const { register, handleSubmit, formState: { errors, isSubmitting, isValid, isSubmitSuccessful } } = useForm();
+
 
   useEffect(() => {
-    redirect(isSubmitSuccessful, navigate)
-  }, [isSubmitSuccessful])
-  
+    redirect(isSubmitSuccessful, navigate);
+  }, [isSubmitSuccessful, navigate]);
+
   return (
     <>
       <div className="p-5 px-48">
         <form 
-        onSubmit={handleSubmit((data)=>{onSubmit(data)})} enctype="multipart/form-data">
+          onSubmit={handleSubmit((data) => { onSubmit(data); })}
+          enctype="multipart/form-data"
+        >
           <div className="mb-4">
             <label
               htmlFor="title"
@@ -32,7 +34,7 @@ const UploadBlog = () => {
               type="text"
               placeholder="Enter Title"
               id="title"
-              className="mt-1  p-2 block w-full rounded-md border border-gray-900/25 border-dashed focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 p-2 block w-full rounded-md border border-gray-900/25 border-dashed focus:ring-indigo-500 sm:text-sm"
               {...register("title", {
                 required: "* Title is required",
                 minLength: { value: 5, message: "* Title too short" },
@@ -171,7 +173,7 @@ const UploadBlog = () => {
               size="small"
               colorMode="dark"
               type="submit"
-              disabled= {isSubmitting||isSubmitSuccessful} 
+              disabled={isSubmitting || isSubmitSuccessful}
             >
               Submit
             </Button>
@@ -179,8 +181,8 @@ const UploadBlog = () => {
         </form>
       </div>
       <div className="flex justify-end">
-        {isSubmitting && isValid && <SubmittingToast/>}
-        {isSubmitSuccessful && <SubmittedToast/>}
+        {isSubmitting && isValid && <SubmittingToast />}
+        {isSubmitSuccessful && <SubmittedToast />}
       </div>
     </>
   );

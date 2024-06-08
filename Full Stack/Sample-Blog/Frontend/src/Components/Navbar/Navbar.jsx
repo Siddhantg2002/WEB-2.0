@@ -1,4 +1,3 @@
-import React from "react";
 import style from "./styles.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@cred/neopop-web/lib/components";
@@ -15,6 +14,7 @@ const Navbar = () => {
     logout();
     navigate("/");
   };
+
 
   return (
     <header className={style.Navbar}>

@@ -7,10 +7,10 @@ import { UserProvider } from "./Global/Admin/User.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <UserProvider>
+      <AuthProvider>
+        <UserProvider>
           <App />
-      </UserProvider>
-    </AuthProvider>
+        </UserProvider>
+      </AuthProvider>
   </React.StrictMode>
 );

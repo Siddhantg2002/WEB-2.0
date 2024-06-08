@@ -9,6 +9,7 @@ const UserBlogsContentRouter = require('./user_blog_content')
 const OAuthRouter = require('./OAuth')
 const ForgetPasswordRouter = require("./ForgetPasswordRouter")
 const VerifyOTP_Router = require("./VerifyOTP_Router")
+const ResetPasswordRouter = require("./ResetPasswordRouter")
 
 // Use the routers
 const allRoutes = (app) => {
@@ -23,6 +24,7 @@ const allRoutes = (app) => {
   app.use("/Oauth",OAuthRouter )
   app.use("/forget-password", ForgetPasswordRouter)
   app.use("/verify-otp", VerifyOTP_Router)
+  app.use("/reset-password", ResetPasswordRouter)
 };
 
 

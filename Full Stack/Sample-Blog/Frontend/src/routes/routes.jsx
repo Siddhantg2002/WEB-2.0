@@ -22,6 +22,7 @@ import ForgotPassword from '@Components/ForgetPassword/ForgetPassword';
 import VerifyOTP from '@Components/VerifyOTP/VerifyOTP';
 import ResetPassword from '@Components/ResetPassword/ResetPassword';
 
+
 const routes = createBrowserRouter([
   {
     path: '/',
@@ -87,7 +88,7 @@ const routes = createBrowserRouter([
               {
                 path: 'premium',
                 element: <Pricing/>
-              }
+              },
             ]
           }
         ]

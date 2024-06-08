@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "placeholder.jpeg",
   },
+  phone_number:{
+    type: String,
+    unique: true,
+  },
   resetToken: {
     type: String,
     unique: true,
@@ -33,15 +37,11 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre("save", async function (next) {
-  if (this.isModified("password")) {
+  if (this.isModified("password")) {  // Check if password is modified or new
     const salt = await bcrypt.genSalt();
-    this.password = bcrypt.hash(this.password, salt);
+    this.password = await bcrypt.hash(this.password, salt);  // Properly await the hashing
   }
   next();
-});
-
-userSchema.post("save", function () {
-  console.log("User created successfully");
 });
 
 // Login search

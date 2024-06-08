@@ -1,43 +1,25 @@
 {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "@Components/*": [
-                "src/Components/*"
-            ],
-            "@Layouts/*": [
-                "src/Layouts/*"
-            ],
-            "@routes/*": [
-                "src/routes/*"
-            ],
-            "@/*": [
-                "src/*"
-            ],
-            "@utils/*": [
-                "src/utils/*"
-            ],
-            "@Global/*": [
-                "src/Global/*"
-            ],
-            "@ContactUs/*": [
-                "src/Components/ContactUs/*"
-            ],
-            "@Pricing/*": [
-                "src/Components/Pricing/*"
-            ],
-            "@T&C/*": [
-                "src/Components/T&C/*"
-            ],
-            "@ForgetPassword/*": [
-                "src/Components/ForgetPassword/*"
-            ],
-            "@VerifyOTP/*": [
-                "src/Components/VerifyOTP/*"
-            ],
-            "@ResetPassword/*": [
-                "src/Components/ResetPassword/*"
-            ]
-        }
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@Components/*": [
+        "src/Components/*"
+      ],
+      "@Global/*": [
+        "src/Global/*"
+      ],
+      "@Layouts/*": [
+        "src/Layouts/*"
+      ],
+      "@routes/*": [
+        "src/routes/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@/*": [
+        "src/*"
+      ]
     }
+  }
 }

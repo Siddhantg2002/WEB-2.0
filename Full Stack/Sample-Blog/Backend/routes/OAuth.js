@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-// const Google_User = require("../models/OAuth_users_schema");
 const User = require("../models/user_schema")
 const { OAuth2Client } = require("google-auth-library");
 const createToken = require("../auth/jwt");
