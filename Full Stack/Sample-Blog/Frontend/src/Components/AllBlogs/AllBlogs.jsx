@@ -8,25 +8,32 @@ import Loading from "./Loading";
 import Error from "./Error";
 import useFetch from "@utils/hooks/useFetch";
 
-
 const AllBlogs = () => {
   const navigate = useNavigate();
-  const { page } = useParams(); // Get the current page from the URL params
-  const [currentPage, setCurrentPage] = useState(parseInt(page) || 1); // Set default page to 1 if undefined
+  const { page } = useParams(); 
+  const [currentPage, setCurrentPage] = useState(parseInt(page) || 1); 
   const [isReversed, setIsReversed] = useState(false);
-  const [limit, setLimit] = useState(6)
-
+  const [limit, setLimit] = useState(6);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredData, setFilteredData] = useState(null);
   const { data, setData, loading, error, totalblogs } = useFetch(`http://localhost:3000/all-blogs?page=${currentPage}&limit=${limit}`, [currentPage, limit]);
 
+  useEffect(() => {
+    if (searchQuery) {
+      const filtered = data.results.filter(blog =>
+        blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        blog.body.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        blog.author.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredData({ ...data, results: filtered });
+    } else {
+      setFilteredData(data);
+    }
+  }, [searchQuery, data]);
 
-  // const handleChange = (value) => {
-  //   console.log('Search query: ', value);
-  // };
-
-  // const handleSubmit = () => {
-  //   console.log('Search query submitted');
-  // };
-
+  const handleChange = (value) => {
+    setSearchQuery(value);
+  };
 
   if (loading) {
     return <Loading />;
@@ -51,17 +58,17 @@ const AllBlogs = () => {
           kind="flat"
           size="small"
           colorMode="dark"
-          onClick={()=>{handlelimit(setLimit, limit)}}
-          disabled = {limit==6 && page>5}
+          onClick={() => handlelimit(setLimit, limit)}
+          disabled={limit === 6 && page > 5}
         >
-          {limit==6 ? 'See All' : 'See Less'}
+          {limit === 6 ? 'See All' : 'See Less'}
         </Button>
         <Button
           variant="secondary"
           kind="flat"
           size="small"
           colorMode="dark"
-          onClick={()=>{handleReverse(data, setData, setIsReversed, isReversed)}}
+          onClick={() => handleReverse(data, setData, setIsReversed, isReversed)}
         >
           {isReversed ? 'Newest' : 'Oldest'}
         </Button>
@@ -74,20 +81,19 @@ const AllBlogs = () => {
           placeholder="search here"
           colorConfig={colorGuide.lightComponents.searchBar}
           inputColorConfig={colorGuide.lightComponents.inputFields}
-          // handleSearchInput={handleChange}
-          // onSubmit={handleSubmit}
+          handleSearchInput={handleChange}
         />
       </div>
       
       </div>
       
-      {data.results && (
+      {filteredData && filteredData.results && (
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-          {data.results.map((blog, index) => (
+          {filteredData.results.map((blog, index) => (
             <div key={index}>
-              <Link to={`/blogs/${currentPage}/${blog.id}`}>
+              <Link to={`/blogs/${currentPage}/${blog._id}`}>
                 <img
-                  src={blog.image}
+                  src={`../../../images/all-blogs/${blog.image}`}
                   className="object-cover w-full h-56 mb-5 bg-center rounded"
                   alt={blog.title}
                   loading="lazy"
@@ -95,14 +101,14 @@ const AllBlogs = () => {
               </Link>
               <h2 className="mb-2 text-lg font-semibold text-gray-900">
                 <Link
-                  to={`/blogs/${currentPage}/${blog.id}`}
+                  to={`/blogs/${currentPage}/${blog._id}`}
                   className="text-gray-900 hover:text-purple-700"
                 >
                   {blog.title}
                 </Link>
               </h2>
-              <p className="mb-3 text-sm font-normal text-gray-500">
-                {blog.description}
+              <p className="mb-3 text-sm font-normal line-clamp-3 text-gray-500">
+                {blog.body}
               </p>
               <p className="mb-3 text-sm font-normal text-gray-500">
                 <span className="font-medium text-gray-900 hover:text-purple-700">
@@ -122,18 +128,18 @@ const AllBlogs = () => {
             kind="flat"
             size="big"
             colorMode="dark"
-            onClick={()=>{handlePreviousClick(setCurrentPage, currentPage, navigate)}}
+            onClick={() => handlePreviousClick(setCurrentPage, currentPage, navigate)}
           >
             Previous Page
           </Button>
         )}
-        {data.results.length === limit && totalblogs<60 && (
+        {data.results.length === limit && totalblogs < 60 && (
           <Button
             variant="secondary"
             kind="elevated"
             size="big"
             colorMode="dark"
-            onClick={()=>{handleNextClick(setCurrentPage, currentPage, navigate)}}
+            onClick={() => handleNextClick(setCurrentPage, currentPage, navigate)}
           >
             Next Page
           </Button>

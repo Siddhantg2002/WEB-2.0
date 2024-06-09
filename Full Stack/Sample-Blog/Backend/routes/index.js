@@ -10,6 +10,8 @@ const OAuthRouter = require('./OAuth')
 const ForgetPasswordRouter = require("./ForgetPasswordRouter")
 const VerifyOTP_Router = require("./VerifyOTP_Router")
 const ResetPasswordRouter = require("./ResetPasswordRouter")
+const RazorPayRouter = require("./RazorPayRouter")
+const PublishRouter = require("./PublishRouter")
 
 // Use the routers
 const allRoutes = (app) => {
@@ -21,10 +23,12 @@ const allRoutes = (app) => {
   app.use("/login", LoginRouter);
   app.use("/user-blogs", UserBlogsRouter)
   app.use("/user-blogs-content", UserBlogsContentRouter)
+  app.use("/publish-blogs", PublishRouter)
   app.use("/Oauth",OAuthRouter )
   app.use("/forget-password", ForgetPasswordRouter)
   app.use("/verify-otp", VerifyOTP_Router)
   app.use("/reset-password", ResetPasswordRouter)
+  app.use("/payment-gateway", RazorPayRouter)
 };
 
 

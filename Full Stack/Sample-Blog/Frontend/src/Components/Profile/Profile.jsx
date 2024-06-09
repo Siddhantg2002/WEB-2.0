@@ -21,7 +21,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const [disable, setDisable] = useState(true);
   const [initialValues, setInitialValues] = useState({});
-  const [preview, setPreview] = useState(null); // State for image preview
+  const [preview, setPreview] = useState(null);
   const {register,handleSubmit, formState: { errors, isSubmitting, isValid, isSubmitSuccessful },} = useForm();
 
   const { data, loading, error } = useAdmin();
@@ -41,7 +41,7 @@ const Profile = () => {
 
   return (
     <section className={styles.background}>
-      <div className="max-w-xs mx-auto mb-48 p-6 bg-white rounded-3xl relative top-24">
+      <div className="max-w-xs mx-auto mb-96 p-6 bg-white rounded-3xl relative top-24">
         <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
         <div
           onClick={() => {

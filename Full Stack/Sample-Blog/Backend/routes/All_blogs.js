@@ -40,12 +40,9 @@ router.get("/", async (req, res, next) => {
 // Route to fetch a Latest blog by ID
 router.get("/:id", async (req, res, next) => {
   const id = req.params.id;
-  if (!Number.isInteger(Number(id))) {
-    return res.status(400).send("Invalid blog ID");
-  }
-
+ 
   try {
-    const blog = await All_Blogs.findOne({ id: Number(id) });
+    const blog = await All_Blogs.findOne({ _id: id });
     if (!blog) {
       return res.status(404).send("Blog not found");
     }

@@ -19,6 +19,6 @@ export default defineConfig({
   },
 
   optimizeDeps: {
-    exclude: ['chunk-P3UNY6QC.js']
+    exclude: ['chunk-P3UNY6QC']
   }
 });

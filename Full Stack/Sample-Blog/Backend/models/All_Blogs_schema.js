@@ -2,15 +2,7 @@ const mongoose = require("mongoose");
 const moment = require("moment");
 
 const blogSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    required: true,
-  },
   title: {
-    type: String,
-    required: true,
-  },
-  description: {
     type: String,
     required: true,
   },

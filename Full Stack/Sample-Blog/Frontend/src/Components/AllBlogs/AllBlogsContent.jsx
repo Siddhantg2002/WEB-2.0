@@ -36,7 +36,7 @@ const AllBlogsContent = () => {
       <div className="grid items-center grid-cols-1 md:grid-cols-2">
         <div className="order-2 h-64 md:order-1 md:h-full">
           <img
-            src={image}
+            src={`../../../images/all-blogs/${image}`}
             className="object-cover w-full h-full bg-center"
             alt="img"
           />

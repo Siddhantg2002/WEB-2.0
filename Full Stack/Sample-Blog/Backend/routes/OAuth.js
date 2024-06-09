@@ -31,7 +31,7 @@ router.post("/google-login", async (req, res, next) => {
     }
     const JWT_TOKEN = createToken(user._id);
     res.cookie("google_jwt", JWT_TOKEN);
-    res.status(200).send({ message: "user logged in", JWT: JWT_TOKEN });
+    res.status(200).send({ message: "user logged in" });
   } catch (error) {
     next(error);
   }

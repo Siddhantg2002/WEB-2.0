@@ -1,22 +1,32 @@
-import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@cred/neopop-web/lib/components";
 import useFetch from "@/utils/hooks/useFetch(auth)";
-import Loading from "./Loading"; // Import the Loading component
+import Loading from "./Loading";
+import { onPublish } from "@utils/YourBlogsContent";
+import { useState, useEffect } from "react";
 
 const YourBlogsContent = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { data, loading, error } = useFetch(`http://localhost:3000/user-blogs-content/${id}`,[id]);
+  const { data, loading, error } = useFetch(`http://localhost:3000/user-blogs-content/${id}`, [id]);
+  const [publishStatus, setPublishStatus] = useState(false);
 
-  if (error) return <p>{error}</p>;
+  useEffect(() => {
+    // Retrieve publish status from localStorage
+    const savedStatus = localStorage.getItem(`publishStatus-${id}`);
+    if (savedStatus === 'true') {
+      setPublishStatus(true);
+    }
+  }, [id]);
+
+  if (error) return <p>{error.message}</p>;
   if (loading) return <Loading />;
 
   return (
     <>
-      {data.map((blog) => (
+      {data.map((blog, index) => (
         <article
-          key={blog.id} // Assuming blog.id exists and is unique
+          key={index}
           itemScope
           itemType="http://schema.org/BlogPosting"
         >
@@ -55,6 +65,8 @@ const YourBlogsContent = () => {
                   size="small"
                   colorMode="dark"
                   showArrow
+                  onClick={() => { onPublish(blog._id, navigate, setPublishStatus) }}
+                  disabled={publishStatus}
                 >
                   Publish
                 </Button>
