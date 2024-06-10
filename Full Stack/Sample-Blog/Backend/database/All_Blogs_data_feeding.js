@@ -5,7 +5,7 @@ const optimization_for_feeding_data = require("./optimization_for_feeding_data")
 async function All_Blogs_feeding() {
   const blogsData = [
     {
-      title: "Process Documents Using Artificial Intelligence For RPA Botss",
+      title: "Process Documents Using Artificial Intelligence For RPA Bots",
       body: fileData.file1,
       author: "Siddhant Gupta",
       date: "20th Jan, 2024",

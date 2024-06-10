@@ -54,16 +54,12 @@ router.get("/:id", async (req, res, next) => {
 
 // Update like/dislike status
 router.post('/:id', decryptJWT, async (req, res, next) => {
-  const { id: userID } = req.user;
-  const { id: blogID } = req.params;
+  const userID  = req.user.id;
+  const  blogID  = req.params.id;
   const { action } = req.body;
 
-  if (!Number.isInteger(Number(blogID))) {
-    return res.status(400).send('Invalid blog ID');
-  }
-
   try {
-    const blog = await All_Blogs.findOne({ id: blogID });
+    const blog = await All_Blogs.findOne({ _id: blogID });
 
     if (!blog) {
       return res.status(404).send('Blog post not found');
@@ -102,15 +98,11 @@ router.post('/:id', decryptJWT, async (req, res, next) => {
 });
 
 router.get('/:id/status', decryptJWT, async (req, res, next) => {
-  const { id: userID } = req.user;
-  const { id: blogID } = req.params;
-
-  if (!Number.isInteger(Number(blogID))) {
-    return res.status(400).send('Invalid blog ID');
-  }
+  const userID  = req.user.id;
+  const  blogID  = req.params.id;
 
   try {
-    const blog = await All_Blogs.findOne({ id: blogID });
+    const blog = await All_Blogs.findOne({ _id: blogID });
 
     if (!blog) {
       return res.status(404).send('Blog post not found');
